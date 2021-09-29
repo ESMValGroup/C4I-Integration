@@ -3,7 +3,7 @@
     <h1 class="text-2xl">
       Climate impact result viewer
     </h1>
-    <VegaLite spec="specs/barChart.json"/>
+    <VegaLite spec="specs/default.json"/>
   </div>
 </template>
 

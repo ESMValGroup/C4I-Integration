@@ -5,9 +5,11 @@ hosted at https://esmvaltool.cloud.dkrz.de/shared/esmvaltool/climate4impact/.
 
 The data is generated with ESMValTool recipe_impact.yml.
 
-Vega-embed is used to provide an interactive visualization as defined by a
-vega-lite spec. In the future, this can easily be re-used. Also, the Vega spec
-could be generated from a Python diagnostic script using Altair.
+Currently, some postprocessing is done in a Jupyter notebook, which can be found
+in the /python folder. The notebook generates the data in the correct format, and
+outputs a vega-lite spec.
+
+Vega-embed is used to embed the vega-lite spec in a lightweight nuxt application.
 
 
 # Nuxt default documentation
