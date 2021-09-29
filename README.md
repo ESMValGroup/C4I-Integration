@@ -1,5 +1,16 @@
 # C4I-Integration
 
+This repository contains the code for generating the Climate4Impact frontend
+hosted at https://esmvaltool.cloud.dkrz.de/shared/esmvaltool/climate4impact/.
+
+The data is generated with ESMValTool recipe_impact.yml.
+
+Vega-embed is used to provide an interactive visualization as defined by a
+vega-lite spec. In the future, this can easily be re-used. Also, the Vega spec
+could be generated from a Python diagnostic script using Altair.
+
+
+# Nuxt default documentation
 ## Build Setup
 
 ```bash
