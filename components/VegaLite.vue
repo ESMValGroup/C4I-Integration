@@ -14,6 +14,7 @@ export default {
   },
   async mounted() {
     const loadedSpec = await fetch(this.spec).then(res => res.json());
+    const query = this
     vegaEmbed("#vis", loadedSpec)
       // https://stackoverflow.com/a/61782407
       .then(result => {

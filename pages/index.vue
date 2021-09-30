@@ -15,7 +15,7 @@
     </p>
     <p>Hold ctrl to pan and zoom, hold alt to select a range (points will be
     highlighted in both graphs), then hold shift to select multiple points.</p>
-    <VegaLite spec="specs/default.json" />
+    <VegaLite spec="specs/vegalite_spec.json" />
     <p>Query: {{ $route.query }}</p>
     <a
       role="button"

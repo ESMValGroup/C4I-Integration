@@ -1,0 +1,137 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "CMIP data processed with ESMValTool.",
+    "data": {
+        "url": "/data/recipe_output.csv"
+    },
+    "config": {
+        "view": {
+            "continuousWidth": 400,
+            "continuousHeight": 300
+        },
+        "legend": {"disable": true}
+    },
+    "params": [
+        {
+            "name": "brush",
+            "select": "interval"
+        },
+        {
+            "name": "query",
+            "select": {
+                "type": "point",
+                "fields": [
+                    "dataset"
+                ]
+            },
+            "value": [
+                {"dataset": "CMIP5_IPSL-CM5B-LR_r1i1p1"},
+                {"dataset": "CMIP5_FGOALS-g2_r1i1p1"}
+            ]
+        }
+    ],
+    "hconcat": [
+        {
+            "title": "Temperature (K)",
+            "mark": {
+                "type": "circle",
+                "size": 150
+            },
+            "encoding": {
+                "x": {
+                    "field": "tas_bias",
+                    "type": "quantitative",
+                    "axis": {
+                        "title": "Bias with respect to ERA5 (1981-2010)"
+                    },
+                    "scale": {
+                        "zero": false
+                    }
+                },
+                "y": {
+                    "type": "quantitative",
+                    "axis": {
+                        "title": "Projected change (2050 versus 2000)"
+                    },
+                    "field": "tas_change",
+                    "scale": {
+                        "zero": false
+                    }
+                },
+                "fill": {
+                    "condition": {
+                        "param": "brush",
+                        "field": "model",
+                        "type": "nominal"
+                    },
+                    "value": "lightgrey"
+                },
+                "stroke": {
+                    "condition": {
+                        "param": "query",
+                        "value": "black",
+                        "empty": false
+                    },
+                    "value": ""
+                },
+                "tooltip": [
+                    {
+                        "field": "dataset",
+                        "type": "nominal"
+                    }
+                ]
+            }
+        },
+        {
+            "title": "Precipitation (mm/day)",
+            "mark": {
+                "type": "circle",
+                "size": 150
+            },
+            "encoding": {
+                "x": {
+                    "field": "pr_bias",
+                    "type": "quantitative",
+                    "axis": {
+                        "title": "Bias with respect to ERA5 (1981-2010)"
+                    },
+                    "scale": {
+                        "zero": false
+                    }
+                },
+                "y": {
+                    "type": "quantitative",
+                    "axis": {
+                        "title": "Projected change (2050 versus 2000)"
+                    },
+                    "field": "pr_change",
+                    "scale": {
+                        "zero": false
+                    }
+                },
+                "fill": {
+                    "condition": {
+                        "param": "brush",
+                        "field": "model",
+                        "type": "nominal"
+                    },
+                    "value": "lightgrey"
+                },
+                "stroke": {
+                    "condition": {
+                        "param": "query",
+                        "value": "black",
+                        "empty": false
+                    },
+                    "value": ""
+                },
+                "tooltip": [
+                    {
+                        "field": "dataset",
+                        "type": "nominal"
+                    }
+                ]
+            }
+        }
+    ]
+}
