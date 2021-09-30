@@ -90,3 +90,4 @@ sw.*
 *.swp
 
 /.ipynb_checkpoints
+python/.ipynb_checkpoints
