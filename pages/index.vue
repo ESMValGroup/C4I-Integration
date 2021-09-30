@@ -13,6 +13,8 @@
       <li>Area is set to Europe (lon 0-39; lat 30-76.25)</li>
     </ul>
     </p>
+    <p>Hold ctrl to pan and zoom, hold alt to select a range (points will be
+    highlighted in both graphs), then hold shift to select multiple points.</p>
     <VegaLite spec="specs/default.json" />
     <p>Query: {{ $route.query }}</p>
     <a
