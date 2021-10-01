@@ -3,7 +3,7 @@ export default {
   target: 'static',
   ssr: false,
   router: {
-    base: '/shared/esmvaltool/cliamte4impact/'
+    base: '/shared/esmvaltool/climate4impact/'
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
