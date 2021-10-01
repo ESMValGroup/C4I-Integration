@@ -14,12 +14,40 @@
     "params": [
         {
             "name": "brush",
-            "select": "interval"
+            "select": {
+                "type": "interval",
+                "on": "[mousedown[event.altKey], mouseup] > mousemove",
+                "translate": "[mousedown[event.altKey], mouseup] > mousemove",
+                "zoom": "wheel![event.altKey]"
+            }
+        },
+        {
+            "name": "panzoom",
+            "select": {
+                "type": "interval",
+                "on": "[mousedown[event.ctrlKey], mouseup] > mousemove",
+                "translate": "[mousedown[event.ctrlKey], mouseup] > mousemove!",
+                "zoom": "wheel![event.ctrlKey]"
+            },
+            "bind": "scales"
+        },
+        {
+            "name": "Project",
+            "select": {
+                "type": "point",
+                "fields": ["project"]
+            },
+            "bind": {
+                "input": "select",
+                "options": ["CMIP5", "CMIP6"]
+            },
+            "value": "CMIP6"
         },
         {
             "name": "query",
             "select": {
                 "type": "point",
+                "clear": "dblclick",
                 "fields": [
                     "dataset"
                 ]
@@ -28,6 +56,13 @@
                 {"dataset": "CMIP5_IPSL-CM5B-LR_r1i1p1"},
                 {"dataset": "CMIP5_FGOALS-g2_r1i1p1"}
             ]
+        }
+    ],
+    "transform": [
+        {
+            "filter": {
+                "param": "Project"
+            }
         }
     ],
     "hconcat": [
