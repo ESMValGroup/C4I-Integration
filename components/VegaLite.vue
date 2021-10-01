@@ -14,15 +14,18 @@ export default {
   },
   async mounted() {
     const loadedSpec = await fetch(this.spec).then(res => res.json());
-    const query = this
-    vegaEmbed("#vis", loadedSpec)
-      // https://stackoverflow.com/a/61782407
-      .then(result => {
-        result.view.addEventListener("click", function(event, item) {
-          console.log(item.datum.dataset);
-        });
-      })
-      .catch(console.warn);
+
+    // Parse query from route and update spec with requested datasets pre-selected
+    const datasets = this.$route.query.dataset ? this.$route.query.dataset : [];
+    const params = datasets.map(item => {
+      const listobj = {};
+      listobj["dataset"] = item;
+      return listobj;
+    });
+    loadedSpec.params.find(obj => obj.name === "query").value = params;
+
+    // Embed the vegalite spec
+    vegaEmbed("#vis", loadedSpec).catch(console.warn);
   }
 };
 </script>
