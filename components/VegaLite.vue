@@ -1,11 +1,24 @@
 <template>
-  <div id="vis" />
+  <div>
+    <div id="vis" />
+    <div>
+      <h1 class="text-xl">Selected datasets:</h1>
+      <ul class="list-disc list-inside">
+        <li v-for="item in selection" :key="item">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
 import vegaEmbed from "vega-embed";
 
 export default {
+  data() {
+    return {
+      selection: []
+    };
+  },
   props: {
     spec: {
       type: String,
@@ -17,6 +30,7 @@ export default {
 
     // Parse query from route and update spec with requested datasets pre-selected
     const datasets = this.$route.query.dataset ? this.$route.query.dataset : [];
+    this.selection = datasets;
     const params = datasets.map(item => {
       const listobj = {};
       listobj["dataset"] = item;
@@ -25,7 +39,17 @@ export default {
     loadedSpec.params.find(obj => obj.name === "query").value = params;
 
     // Embed the vegalite spec
-    vegaEmbed("#vis", loadedSpec).catch(console.warn);
+    const updateList = this.updateList;
+    vegaEmbed("#vis", loadedSpec)
+      .then(function(result) {
+        result.view.addSignalListener("query", updateList);
+      })
+      .catch(console.warn);
+  },
+  methods: {
+    updateList(event, newSelection) {
+      this.selection = newSelection.dataset;
+    }
   }
 };
 </script>
