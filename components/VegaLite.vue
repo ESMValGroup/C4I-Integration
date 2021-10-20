@@ -28,15 +28,20 @@ export default {
   async mounted() {
     const loadedSpec = await fetch(this.spec).then(res => res.json());
 
-    // Parse query from route and update spec with requested datasets pre-selected
+    // Get project from query and update selection
+    const project = this.$route.query.project ? this.$route.query.project : "CMIP6";
+    loadedSpec.params.find(obj => obj.name === "Project").value = project;
+
+    // Get datasets from query and update selection
     const datasets = this.$route.query.dataset ? this.$route.query.dataset : [];
     this.selection = datasets;
     const params = datasets.map(item => {
       const listobj = {};
-      listobj["dataset"] = item;
+      listobj["model"] = item;
       return listobj;
     });
     loadedSpec.params.find(obj => obj.name === "query").value = params;
+
 
     // Embed the vegalite spec
     const updateList = this.updateList;
@@ -48,7 +53,8 @@ export default {
   },
   methods: {
     updateList(event, newSelection) {
-      this.selection = newSelection.dataset;
+      console.log(newSelection)
+      this.selection = newSelection.model;
     }
   }
 };
