@@ -11,6 +11,7 @@
       <li>Future change is calculated for 2036-2065 as compared to
   1986-2015.</li>
       <li>Area is set to Europe (lon 0-39; lat 30-76.25)</li>
+      <li>All data are taken from the RCP/SSP 8.5 scenario</li>
     </ul>
     </p>
     <p>Hold ctrl to pan and zoom, hold alt to select a range (points will be
