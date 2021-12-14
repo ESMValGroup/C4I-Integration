@@ -29,7 +29,10 @@ export default {
     const loadedSpec = await fetch(this.spec).then(res => res.json());
 
     // Get project from query and update selection
-    const project = this.$route.query.project ? this.$route.query.project : "CMIP6";
+    const project = "CMIP6"
+    if (this.$route.query.project === "CMIP5") {
+      project = "CMIP5"
+    }
     loadedSpec.params.find(obj => obj.name === "Project").value = project;
 
     // Get datasets from query and update selection
