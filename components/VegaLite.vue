@@ -33,10 +33,19 @@ export default {
     if (this.$route.query.project === "CMIP5") {
       project = "CMIP5"
     }
+
     loadedSpec.params.find(obj => obj.name === "Project").value = project;
 
     // Get datasets from query and update selection
-    const datasets = this.$route.query.dataset ? this.$route.query.dataset : [];
+    let datasets = []
+    if (!!this.$route.query.dataset){
+      if (typeof this.$route.query.dataset === "string") {
+        datasets.push(this.$route.query.dataset)
+      } else if (Array.isArray(this.$route.query.dataset)) {
+        datasets = datasets.concat(this.$route.query.dataset)
+      }
+    }
+
     this.selection = datasets;
     const params = datasets.map(item => {
       const listobj = {};
