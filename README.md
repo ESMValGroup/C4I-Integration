@@ -1,7 +1,7 @@
 # C4I-Integration
 
 This repository contains the code for generating the Climate4Impact frontend
-hosted at https://esmvaltool.cloud.dkrz.de/shared/esmvaltool/climate4impact/.
+hosted at https://esmvaltool.dkrz.de/shared/esmvaltool/climate4impact/.
 
 The data is generated with ESMValTool recipe_impact.yml.
 
