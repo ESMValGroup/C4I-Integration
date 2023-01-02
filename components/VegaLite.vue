@@ -29,7 +29,7 @@ export default {
     const loadedSpec = await fetch(this.spec).then(res => res.json());
 
     // Get project from query and update selection
-    var project = "CMIP6"
+    let project = "CMIP6"
     if (this.$route.query.project === "CMIP5") {
       project = "CMIP5"
     }
