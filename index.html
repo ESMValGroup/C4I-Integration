@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Compare the bias and projected change of climate models, calculated with ESMValTool."
+    />
+    <title>Climate impact result viewer</title>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <main class="container">
+      <hgroup>
+        <h1>Climate impact result viewer</h1>
+        <p>Bias and projected change of climate models, calculated with ESMValTool</p>
+      </hgroup>
+      <p>
+        This application shows results from climate models, calculated with
+        <a href="https://esmvaltool.org">ESMValTool</a>. It is intended to
+        provide some guidance for climate impact researchers, to select one or
+        more datasets that adequately sample the spread of the ensemble.
+      </p>
+
+      <label for="project">Project</label>
+      <select id="project"></select>
+      <ul id="notes"></ul>
+
+      <p>
+        <small>
+          Click a point to select a dataset, hold <kbd>Shift</kbd> to select
+          multiple, and double-click to clear the selection. Hold
+          <kbd>Alt</kbd> to select a range (points will be highlighted in both
+          graphs) and hold <kbd>Ctrl</kbd> to pan and zoom.
+        </small>
+      </p>
+      <div id="vis"></div>
+
+      <section>
+        <h2>Selected datasets</h2>
+        <ul id="selection"></ul>
+        <p id="no-selection"><small>No datasets selected.</small></p>
+      </section>
+
+      <a id="recipe-output" role="button" class="secondary outline" hidden>
+        View recipe output
+      </a>
+    </main>
+  </body>
+</html>

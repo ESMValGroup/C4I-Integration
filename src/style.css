@@ -1,0 +1,10 @@
+/* Let the side-by-side charts scroll on narrow screens */
+#vis {
+  overflow-x: auto;
+  margin-bottom: var(--pico-spacing);
+}
+
+/* Pico's <details> styling adds a chevron to the Vega export menu */
+.vega-embed summary::after {
+  display: none;
+}

@@ -1,82 +1,82 @@
 # C4I-Integration
 
-This repository contains the code for generating the Climate4Impact frontend
-hosted at https://esmvaltool.dkrz.de/shared/esmvaltool/climate4impact/.
+Interactive viewer for the results of the ESMValTool recipes
+[`recipe_impact.yml`](https://github.com/ESMValGroup/ESMValTool/blob/main/esmvaltool/recipes/recipe_impact.yml)
+and
+[`recipe_impact_cordex-cmip6.yml`](https://github.com/ESMValGroup/ESMValTool/blob/main/esmvaltool/recipes/recipe_impact_cordex-cmip6.yml),
+hosted at https://esmvaltool.dkrz.de/shared/esmvaltool/climate4impact/ and
+linked from [Climate4Impact](https://www.climate4impact.eu).
 
-The data is generated with ESMValTool recipe_impact.yml.
+The page shows the bias and the projected change of each model run, so climate
+impact researchers can select a few runs that sample the spread of the
+ensemble. It is a static site built with [Vite](https://vite.dev), using
+[Vega-Lite](https://vega.github.io/vega-lite/) for the charts and
+[Pico CSS](https://picocss.com) for styling.
 
-Currently, some postprocessing is done in a Jupyter notebook, which can be found
-in the /python folder. The notebook generates the data in the correct format, and
-outputs a vega-lite spec.
+## Data
 
-Vega-embed is used to embed the vega-lite spec in a lightweight nuxt application.
+Each project (e.g. CMIP5, CMIP6, CORDEX-CMIP6) has its own Vega-Lite
+specification in [`src/specs/`](src/specs), named `<PROJECT>.json`. The page
+offers every file in that directory in the project dropdown, so no code changes
+are needed to add, update or remove a project.
 
+The specifications are written by the `impact/bias_and_change.py` diagnostic
+in ESMValTool, which embeds the data and the notes shown above the charts. To
+update a project:
 
-# Nuxt default documentation
-## Build Setup
+1. Run the recipe, e.g. `esmvaltool run recipe_impact.yml`.
+2. Copy `work/bias_and_change/visualize/vegalite_spec_<PROJECT>.json` from the
+   recipe output directory to `src/specs/<PROJECT>.json`.
+3. Rebuild and deploy the site as described below.
+
+To remove a project, delete its file from `src/specs/`.
+
+## Development
+
+Requires [Node.js](https://nodejs.org) 20 or later.
 
 ```bash
 # install dependencies
-$ yarn install
+npm install
 
-# serve with hot reload at localhost:3000
-$ yarn dev
+# serve with hot reload at http://localhost:5173
+npm run dev
 
-# build for production and launch server
-$ yarn build
-$ yarn start
+# build the static site into dist/
+npm run build
 
-# generate static project
-$ yarn generate
+# serve the built site locally
+npm run preview
 ```
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+## Deployment
 
-## Special Directories
+Copy the contents of `dist/` to the web server. All paths are relative, so the
+site can be served from any directory.
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+Each specification records the name of the recipe output directory it came
+from, e.g. `recipe_impact_cordex-cmip6_20261008_144221`. The "View recipe
+output" button for that project links to `<name>/index.html`, so copy the
+recipe output directories next to the site without renaming them:
 
-### `assets`
+```
+climate4impact/
+├── index.html
+├── assets/
+├── recipe_impact_20261008_111946/
+│   └── index.html
+└── recipe_impact_cordex-cmip6_20261008_144221/
+    └── index.html
+```
 
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+Projects from the same recipe run share the same directory. The button is
+hidden for specifications that do not record a recipe output directory.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
+## URL parameters
 
-### `components`
+- `project`: the project to show, e.g. `?project=CMIP5`. Defaults to CMIP6.
+- `dataset`: datasets to select. Give it multiple times to select several.
+  The value can be a full identifier (e.g. `CMIP6_MIROC6_r1i1p1f1`) or a model
+  name (e.g. `MIROC6`), which selects all runs of that model.
 
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
-
-### `layouts`
-
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
-
-
-### `pages`
-
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
-
-### `plugins`
-
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
-
-### `static`
-
-This directory contains your static files. Each file inside this directory is mapped to `/`.
-
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
-
-### `store`
-
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+The URL is updated when the selection changes, so it can be shared.

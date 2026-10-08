@@ -1,0 +1,278 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "CORDEX-CMIP6 data processed with ESMValTool.",
+  "usermeta": {
+    "project": "CORDEX-CMIP6",
+    "notes": [
+      "Bias is calculated with respect to the ERA5 reanalysis dataset over the period 1986-2015.",
+      "Future change is calculated for 2035-2065 as compared to 1986-2015.",
+      "Domain is set to Europe (EUR-12 CORDEX domain).",
+      "All data are taken from the SSP5-8.5 scenario."
+    ],
+    "recipe_output": "recipe_impact_cordex-cmip6_20261008_144939"
+  },
+  "data": {
+    "values": [
+      {
+        "dataset": "CNRM-ALADIN64E1_v1-r1_NorESM2-MM_r1i1p1f1",
+        "tas_bias": 2.6441977024,
+        "pr_bias": 1.800170064,
+        "tas_change": 1.4149940014,
+        "pr_change": -0.0684322715,
+        "model": "CNRM-ALADIN64E1",
+        "version_realization": "v1-r1",
+        "driver": "NorESM2-MM",
+        "member": "r1i1p1f1",
+        "project": "CORDEX-CMIP6"
+      },
+      {
+        "dataset": "ICON-CLM-202407-1-1_v1-r1_CNRM-ESM2-1_r1i1p1f2",
+        "tas_bias": 2.6952517033,
+        "pr_bias": 2.1710314751,
+        "tas_change": 1.2940975428,
+        "pr_change": -0.0777892321,
+        "model": "ICON-CLM-202407-1-1",
+        "version_realization": "v1-r1",
+        "driver": "CNRM-ESM2-1",
+        "member": "r1i1p1f2",
+        "project": "CORDEX-CMIP6"
+      },
+      {
+        "dataset": "ICON-CLM-202407-1-1_v1-r1_EC-Earth3-Veg_r1i1p1f1",
+        "tas_bias": 2.498966217,
+        "pr_bias": 1.5839060545,
+        "tas_change": 2.1542346478,
+        "pr_change": -0.0083087068,
+        "model": "ICON-CLM-202407-1-1",
+        "version_realization": "v1-r1",
+        "driver": "EC-Earth3-Veg",
+        "member": "r1i1p1f1",
+        "project": "CORDEX-CMIP6"
+      },
+      {
+        "dataset": "ICON-CLM-202407-1-1_v1-r1_MIROC6_r1i1p1f1",
+        "tas_bias": 2.8420882225,
+        "pr_bias": 1.808165431,
+        "tas_change": 1.7212034464,
+        "pr_change": -0.0050330069,
+        "model": "ICON-CLM-202407-1-1",
+        "version_realization": "v1-r1",
+        "driver": "MIROC6",
+        "member": "r1i1p1f1",
+        "project": "CORDEX-CMIP6"
+      },
+      {
+        "dataset": "ICON-CLM-202407-1-1_v1-r1_MPI-ESM1-2-HR_r1i1p1f1",
+        "tas_bias": 2.6818039417,
+        "pr_bias": 1.5976804495,
+        "tas_change": 1.4037793875,
+        "pr_change": -0.0193339381,
+        "model": "ICON-CLM-202407-1-1",
+        "version_realization": "v1-r1",
+        "driver": "MPI-ESM1-2-HR",
+        "member": "r1i1p1f1",
+        "project": "CORDEX-CMIP6"
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "continuousWidth": 400,
+      "continuousHeight": 300
+    },
+    "legend": {
+      "disable": true
+    }
+  },
+  "params": [
+    {
+      "name": "brush",
+      "select": {
+        "type": "interval",
+        "on": "[pointerdown[event.altKey], pointerup] > pointermove",
+        "translate": "[pointerdown[event.altKey], pointerup] > pointermove",
+        "zoom": "wheel![event.altKey]"
+      }
+    },
+    {
+      "name": "panzoom",
+      "select": {
+        "type": "interval",
+        "on": "[pointerdown[event.ctrlKey], pointerup] > pointermove",
+        "translate": "[pointerdown[event.ctrlKey], pointerup] > pointermove!",
+        "zoom": "wheel![event.ctrlKey]"
+      },
+      "bind": "scales"
+    },
+    {
+      "name": "query",
+      "select": {
+        "type": "point",
+        "fields": [
+          "dataset"
+        ],
+        "clear": "dblclick"
+      }
+    }
+  ],
+  "hconcat": [
+    {
+      "title": "Temperature (K)",
+      "mark": {
+        "type": "circle",
+        "size": 150
+      },
+      "encoding": {
+        "x": {
+          "field": "tas_bias",
+          "type": "quantitative",
+          "title": "Bias (RMSD of all gridpoints)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "y": {
+          "field": "tas_change",
+          "type": "quantitative",
+          "title": "Mean change (Future - Reference)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "fill": {
+          "condition": {
+            "param": "brush",
+            "field": "model",
+            "type": "nominal"
+          },
+          "value": "lightgray"
+        },
+        "stroke": {
+          "condition": {
+            "param": "query",
+            "value": "black",
+            "empty": false
+          },
+          "value": "transparent"
+        },
+        "tooltip": [
+          {
+            "field": "dataset",
+            "type": "nominal"
+          },
+          {
+            "field": "model",
+            "type": "nominal"
+          },
+          {
+            "field": "version_realization",
+            "type": "nominal"
+          },
+          {
+            "field": "driver",
+            "type": "nominal"
+          },
+          {
+            "field": "member",
+            "type": "nominal"
+          },
+          {
+            "field": "project",
+            "type": "nominal"
+          },
+          {
+            "field": "tas_bias",
+            "type": "quantitative",
+            "title": "bias",
+            "format": ".3g"
+          },
+          {
+            "field": "tas_change",
+            "type": "quantitative",
+            "title": "change",
+            "format": ".3g"
+          }
+        ]
+      }
+    },
+    {
+      "title": "Precipitation (mm/day)",
+      "mark": {
+        "type": "circle",
+        "size": 150
+      },
+      "encoding": {
+        "x": {
+          "field": "pr_bias",
+          "type": "quantitative",
+          "title": "Bias (RMSD of all gridpoints)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "y": {
+          "field": "pr_change",
+          "type": "quantitative",
+          "title": "Mean change (Future - Reference)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "fill": {
+          "condition": {
+            "param": "brush",
+            "field": "model",
+            "type": "nominal"
+          },
+          "value": "lightgray"
+        },
+        "stroke": {
+          "condition": {
+            "param": "query",
+            "value": "black",
+            "empty": false
+          },
+          "value": "transparent"
+        },
+        "tooltip": [
+          {
+            "field": "dataset",
+            "type": "nominal"
+          },
+          {
+            "field": "model",
+            "type": "nominal"
+          },
+          {
+            "field": "version_realization",
+            "type": "nominal"
+          },
+          {
+            "field": "driver",
+            "type": "nominal"
+          },
+          {
+            "field": "member",
+            "type": "nominal"
+          },
+          {
+            "field": "project",
+            "type": "nominal"
+          },
+          {
+            "field": "pr_bias",
+            "type": "quantitative",
+            "title": "bias",
+            "format": ".3g"
+          },
+          {
+            "field": "pr_change",
+            "type": "quantitative",
+            "title": "change",
+            "format": ".3g"
+          }
+        ]
+      }
+    }
+  ]
+}
