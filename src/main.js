@@ -78,9 +78,17 @@ async function showProject(project, requested) {
   recipeOutput.hidden = false;
 
   const datasets = findDatasets(spec.data.values, requested);
-  spec.params.find((param) => param.name === "query").value = datasets.map(
-    (dataset) => ({ dataset }),
+  const selections = Object.fromEntries(
+    spec.params.map((param) => [param.name, param]),
   );
+  selections.query.value = datasets.map((dataset) => ({ dataset }));
+  // Only clicking a point changes the selection, so it is kept when clicking
+  // elsewhere or when panning, zooming or highlighting a range
+  selections.query.select.on = "symbol:click[!event.ctrlKey && !event.altKey]";
+  // Clear both the selection and the highlighted range
+  const clear = "dblclick, window:keydown[event.key === 'Escape']";
+  selections.query.select.clear = clear;
+  selections.brush.select.clear = clear;
   if (dark) {
     for (const view of spec.hconcat) {
       view.encoding.stroke.condition.value = "white";
