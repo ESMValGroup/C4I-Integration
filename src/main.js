@@ -2,17 +2,6 @@ import "@picocss/pico";
 import "./style.css";
 import vegaEmbed from "vega-embed";
 
-// Each file in ./specs is a project, e.g. specs/CMIP6.json
-const specUrls = Object.fromEntries(
-  Object.entries(
-    import.meta.glob("./specs/*.json", {
-      query: "?url",
-      import: "default",
-      eager: true,
-    }),
-  ).map(([path, url]) => [path.match(/([^/]+)\.json$/)[1], url]),
-);
-const projects = Object.keys(specUrls).sort();
 const DEFAULT_PROJECT = "CMIP6";
 
 const projectSelect = document.getElementById("project");
@@ -23,6 +12,28 @@ const recipeOutput = document.getElementById("recipe-output");
 const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
 let embedded;
+// Maps each project to the recipe output directory to show it from
+let recipeRuns;
+
+// The data is updated without rebuilding the site, so do not use stale copies
+function fetchJson(url) {
+  return fetch(url, { cache: "no-cache" }).then((res) => {
+    if (!res.ok) {
+      throw new Error(`Failed to fetch ${url}: ${res.status}`);
+    }
+    return res.json();
+  });
+}
+
+function specUrl(project) {
+  return [
+    recipeRuns[project],
+    "work/bias_and_change/visualize",
+    `vegalite_spec_${project}.json`,
+  ]
+    .map((part) => part.split("/").map(encodeURIComponent).join("/"))
+    .join("/");
+}
 
 function fillList(list, items) {
   list.replaceChildren(
@@ -56,18 +67,15 @@ function findDatasets(rows, requested) {
 }
 
 async function showProject(project, requested) {
-  const spec = await fetch(specUrls[project]).then((res) => res.json());
+  const spec = await fetchJson(specUrl(project));
   if (projectSelect.value !== project) {
     return; // another project was selected in the meantime
   }
   fillList(notesList, spec.usermeta?.notes ?? []);
-  // The recipe output directory is deployed next to this page
-  const recipeRun = spec.usermeta?.recipe_output;
-  recipeOutput.hidden = !recipeRun;
-  if (recipeRun) {
-    recipeOutput.href = `${encodeURIComponent(recipeRun)}/index.html`;
-    recipeOutput.title = `Output of recipe run ${recipeRun}`;
-  }
+  const recipeRun = recipeRuns[project];
+  recipeOutput.href = `${encodeURIComponent(recipeRun)}/index.html`;
+  recipeOutput.title = `Output of recipe run ${recipeRun}`;
+  recipeOutput.hidden = false;
 
   const datasets = findDatasets(spec.data.values, requested);
   spec.params.find((param) => param.name === "query").value = datasets.map(
@@ -90,19 +98,27 @@ async function showProject(project, requested) {
   );
 }
 
-const params = new URLSearchParams(window.location.search);
-const requestedProject = params.get("project");
-const initialProject = projects.includes(requestedProject)
-  ? requestedProject
-  : projects.includes(DEFAULT_PROJECT)
-    ? DEFAULT_PROJECT
-    : projects[0];
+async function main() {
+  // The manifest is deployed next to this page, see README.md
+  recipeRuns = await fetchJson("projects.json");
+  const projects = Object.keys(recipeRuns).sort();
 
-projectSelect.replaceChildren(
-  ...projects.map((project) => new Option(project, project)),
-);
-projectSelect.value = initialProject;
-projectSelect.addEventListener("change", () =>
-  showProject(projectSelect.value, []).catch(console.error),
-);
-showProject(initialProject, params.getAll("dataset")).catch(console.error);
+  const params = new URLSearchParams(window.location.search);
+  const requestedProject = params.get("project");
+  const initialProject = projects.includes(requestedProject)
+    ? requestedProject
+    : projects.includes(DEFAULT_PROJECT)
+      ? DEFAULT_PROJECT
+      : projects[0];
+
+  projectSelect.replaceChildren(
+    ...projects.map((project) => new Option(project, project)),
+  );
+  projectSelect.value = initialProject;
+  projectSelect.addEventListener("change", () =>
+    showProject(projectSelect.value, []).catch(console.error),
+  );
+  await showProject(initialProject, params.getAll("dataset"));
+}
+
+main().catch(console.error);
