@@ -1,4 +1,5 @@
 {
-  "CMIP6": "recipe_impact_cmip6_20261009_115350",
-  "CORDEX-CMIP6": "recipe_impact_cordex-cmip6_20261009_145234"
+  "CMIP5": "recipe_impact_20230302_220334",
+  "CMIP6": "recipe_impact_cmip6_20261009_154152",
+  "CORDEX-CMIP6": "recipe_impact_cordex-cmip6_20261009_150557"
 }

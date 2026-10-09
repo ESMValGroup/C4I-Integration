@@ -4,8 +4,9 @@ Interactive viewer for the results of the ESMValTool recipes
 [`recipe_impact_cmip6.yml`](https://github.com/ESMValGroup/ESMValTool/blob/main/esmvaltool/recipes/recipe_impact_cmip6.yml)
 and
 [`recipe_impact_cordex-cmip6.yml`](https://github.com/ESMValGroup/ESMValTool/blob/main/esmvaltool/recipes/recipe_impact_cordex-cmip6.yml),
-hosted at https://esmvaltool.dkrz.de/shared/esmvaltool/climate4impact/ and
-linked from [Climate4Impact](https://www.climate4impact.eu).
+and of a 2023 run of `recipe_impact.yml` for CMIP5, hosted at
+https://esmvaltool.dkrz.de/shared/esmvaltool/climate4impact/ and linked from
+[Climate4Impact](https://www.climate4impact.eu).
 
 The page shows the bias and the projected change of each model run, so climate
 impact researchers can select a few runs that sample the spread of the
@@ -18,7 +19,7 @@ ensemble. It is a static site built with [Vite](https://vite.dev), using
 The page reads its data on the web server when it loads, so updating, adding or
 removing a project does not require rebuilding the site.
 
-Each project (e.g. CMIP6, CORDEX-CMIP6) is shown from the output
+Each project (e.g. CMIP5, CMIP6, CORDEX-CMIP6) is shown from the output
 directory of an ESMValTool recipe run, deployed next to the site. The
 `impact/bias_and_change.py` diagnostic in ESMValTool writes a Vega-Lite
 specification for each project to
@@ -30,8 +31,9 @@ in the project dropdown and the recipe output directory to show each one from:
 
 ```json
 {
-  "CMIP6": "recipe_impact_cmip6_20261009_115350",
-  "CORDEX-CMIP6": "recipe_impact_cordex-cmip6_20261009_145234"
+  "CMIP5": "recipe_impact_20230302_220334",
+  "CMIP6": "recipe_impact_cmip6_20261009_154152",
+  "CORDEX-CMIP6": "recipe_impact_cordex-cmip6_20261009_150557"
 }
 ```
 
@@ -47,6 +49,12 @@ To update a project:
 3. Point the project to the new directory in `projects.json`.
 
 To remove a project, delete it from `projects.json`.
+
+The CMIP5 project cannot be rerun, so it is shown from the recipe run
+`recipe_impact_20230302_220334`. That run predates the Vega-Lite output of the
+diagnostic, so `vegalite_spec_CMIP5.json` was generated afterwards from its
+`recipe_output.csv` with the `build_vegalite_spec` function of the diagnostic.
+Note that the bias in that run is calculated over 1986-2010.
 
 ## Development
 
@@ -65,7 +73,8 @@ npm run build
 
 During development, the [`data/`](data) directory stands in for the web
 server: it contains an example `projects.json` and the recipe output it points
-to (only the specifications). Neither is included in `dist/`.
+to (only the specifications, `index.html` and plots). Neither is included in
+`dist/`.
 
 ## Deployment
 
@@ -79,10 +88,13 @@ climate4impact/
 ├── index.html
 ├── assets/
 ├── projects.json
-├── recipe_impact_cmip6_20261009_115350/
+├── recipe_impact_20230302_220334/
+│   ├── index.html
+│   └── work/bias_and_change/visualize/vegalite_spec_CMIP5.json
+├── recipe_impact_cmip6_20261009_154152/
 │   ├── index.html
 │   └── work/bias_and_change/visualize/vegalite_spec_CMIP6.json
-└── recipe_impact_cordex-cmip6_20261009_145234/
+└── recipe_impact_cordex-cmip6_20261009_150557/
     ├── index.html
     └── work/bias_and_change/visualize/vegalite_spec_CORDEX-CMIP6.json
 ```

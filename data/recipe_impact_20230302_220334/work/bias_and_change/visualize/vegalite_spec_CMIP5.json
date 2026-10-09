@@ -1,0 +1,1172 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "CMIP5 data processed with ESMValTool.",
+  "usermeta": {
+    "project": "CMIP5",
+    "notes": [
+      "Bias is calculated with respect to the ERA5 reanalysis dataset over the period 1986-2010.",
+      "Future change is calculated for 2035-2065 as compared to 1986-2015.",
+      "Area is set to Europe (lon 0-39; lat 30-76.25).",
+      "All data are taken from the RCP8.5 scenario."
+    ],
+    "recipe_output": "recipe_impact_20230302_220334"
+  },
+  "data": {
+    "values": [
+      {
+        "dataset": "CMIP5_ACCESS1-0_r1i1p1",
+        "tas_bias": 3.1921906014,
+        "pr_bias": 1.6903915877,
+        "tas_change": 2.3610420227,
+        "pr_change": 0.0006916245,
+        "project": "CMIP5",
+        "model": "ACCESS1-0",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_ACCESS1-3_r1i1p1",
+        "tas_bias": 3.1112777511,
+        "pr_bias": 1.6692311755,
+        "tas_change": 2.2394318581,
+        "pr_change": 0.0542021122,
+        "project": "CMIP5",
+        "model": "ACCESS1-3",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_BNU-ESM_r1i1p1",
+        "tas_bias": 4.08055583,
+        "pr_bias": 1.6135667145,
+        "tas_change": 2.4437317848,
+        "pr_change": 0.0025548389,
+        "project": "CMIP5",
+        "model": "BNU-ESM",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_CCSM4_r1i1p1",
+        "tas_bias": 3.1173393264,
+        "pr_bias": 1.4614635776,
+        "tas_change": 1.9546800852,
+        "pr_change": -0.0165876448,
+        "project": "CMIP5",
+        "model": "CCSM4",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_CCSM4_r2i1p1",
+        "tas_bias": 3.2297576946,
+        "pr_bias": 1.4923816583,
+        "tas_change": 1.6490234137,
+        "pr_change": 0.0051873198,
+        "project": "CMIP5",
+        "model": "CCSM4",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_CCSM4_r3i1p1",
+        "tas_bias": 3.0664005014,
+        "pr_bias": 1.4770099085,
+        "tas_change": 1.6407767534,
+        "pr_change": -0.0034669896,
+        "project": "CMIP5",
+        "model": "CCSM4",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_CCSM4_r4i1p1",
+        "tas_bias": 3.0704407741,
+        "pr_bias": 1.4790900983,
+        "tas_change": 1.7542899847,
+        "pr_change": -0.0187863252,
+        "project": "CMIP5",
+        "model": "CCSM4",
+        "member": "r4i1p1"
+      },
+      {
+        "dataset": "CMIP5_CCSM4_r5i1p1",
+        "tas_bias": 3.0215054336,
+        "pr_bias": 1.4683536919,
+        "tas_change": 1.8095953465,
+        "pr_change": 0.0004008524,
+        "project": "CMIP5",
+        "model": "CCSM4",
+        "member": "r5i1p1"
+      },
+      {
+        "dataset": "CMIP5_CCSM4_r6i1p1",
+        "tas_bias": 3.0561566453,
+        "pr_bias": 1.4806091044,
+        "tas_change": 1.7204675674,
+        "pr_change": -0.0028592348,
+        "project": "CMIP5",
+        "model": "CCSM4",
+        "member": "r6i1p1"
+      },
+      {
+        "dataset": "CMIP5_CESM1-BGC_r1i1p1",
+        "tas_bias": 3.0764682189,
+        "pr_bias": 1.4569327665,
+        "tas_change": 1.7600055933,
+        "pr_change": 0.0172030983,
+        "project": "CMIP5",
+        "model": "CESM1-BGC",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_CESM1-CAM5_r1i1p1",
+        "tas_bias": 3.0371567277,
+        "pr_bias": 1.4715961999,
+        "tas_change": 2.5454843044,
+        "pr_change": 0.0795302214,
+        "project": "CMIP5",
+        "model": "CESM1-CAM5",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_CESM1-CAM5_r2i1p1",
+        "tas_bias": 2.9486493955,
+        "pr_bias": 1.4907983615,
+        "tas_change": 2.1394515038,
+        "pr_change": 0.0492328878,
+        "project": "CMIP5",
+        "model": "CESM1-CAM5",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_CESM1-CAM5_r3i1p1",
+        "tas_bias": 2.8697153972,
+        "pr_bias": 1.5033127289,
+        "tas_change": 2.2917706966,
+        "pr_change": 0.0829370427,
+        "project": "CMIP5",
+        "model": "CESM1-CAM5",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_CESM1-WACCM_r2i1p1",
+        "tas_bias": 3.9075246799,
+        "pr_bias": 1.4656025299,
+        "tas_change": 2.0409908295,
+        "pr_change": -0.0104900644,
+        "project": "CMIP5",
+        "model": "CESM1-WACCM",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_CESM1-WACCM_r3i1p1",
+        "tas_bias": 3.7252900964,
+        "pr_bias": 1.4454096465,
+        "tas_change": 1.9061428308,
+        "pr_change": -0.0043504272,
+        "project": "CMIP5",
+        "model": "CESM1-WACCM",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_CESM1-WACCM_r4i1p1",
+        "tas_bias": 3.7873572346,
+        "pr_bias": 1.4575391032,
+        "tas_change": 1.8722699881,
+        "pr_change": -0.0012522647,
+        "project": "CMIP5",
+        "model": "CESM1-WACCM",
+        "member": "r4i1p1"
+      },
+      {
+        "dataset": "CMIP5_CMCC-CESM_r1i1p1",
+        "tas_bias": 5.6640645059,
+        "pr_bias": 1.5211139712,
+        "tas_change": 2.7274894714,
+        "pr_change": 0.1196771147,
+        "project": "CMIP5",
+        "model": "CMCC-CESM",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_CMCC-CMS_r1i1p1",
+        "tas_bias": 4.3688159,
+        "pr_bias": 1.524134169,
+        "tas_change": 2.5315554142,
+        "pr_change": 0.0276452741,
+        "project": "CMIP5",
+        "model": "CMCC-CMS",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_CMCC-CM_r1i1p1",
+        "tas_bias": 5.4806266574,
+        "pr_bias": 1.5380308203,
+        "tas_change": 2.7044382095,
+        "pr_change": 0.0555393384,
+        "project": "CMIP5",
+        "model": "CMCC-CM",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_CNRM-CM5_r10i1p1",
+        "tas_bias": 3.3755760004,
+        "pr_bias": 1.5229348378,
+        "tas_change": 1.5455764532,
+        "pr_change": 0.0371224734,
+        "project": "CMIP5",
+        "model": "CNRM-CM5",
+        "member": "r10i1p1"
+      },
+      {
+        "dataset": "CMIP5_CNRM-CM5_r1i1p1",
+        "tas_bias": 3.4583387914,
+        "pr_bias": 1.515399425,
+        "tas_change": 1.8418990374,
+        "pr_change": 0.0638443425,
+        "project": "CMIP5",
+        "model": "CNRM-CM5",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_CNRM-CM5_r2i1p1",
+        "tas_bias": 3.3540948161,
+        "pr_bias": 1.5153586792,
+        "tas_change": 1.7727981806,
+        "pr_change": 0.0656395841,
+        "project": "CMIP5",
+        "model": "CNRM-CM5",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_CNRM-CM5_r4i1p1",
+        "tas_bias": 3.452123936,
+        "pr_bias": 1.514051623,
+        "tas_change": 1.7845927477,
+        "pr_change": 0.0576301158,
+        "project": "CMIP5",
+        "model": "CNRM-CM5",
+        "member": "r4i1p1"
+      },
+      {
+        "dataset": "CMIP5_CNRM-CM5_r6i1p1",
+        "tas_bias": 3.4092952723,
+        "pr_bias": 1.51320383,
+        "tas_change": 1.9833390713,
+        "pr_change": 0.0621075696,
+        "project": "CMIP5",
+        "model": "CNRM-CM5",
+        "member": "r6i1p1"
+      },
+      {
+        "dataset": "CMIP5_CSIRO-Mk3-6-0_r10i1p1",
+        "tas_bias": 6.1633601163,
+        "pr_bias": 1.5309517008,
+        "tas_change": 2.4239463806,
+        "pr_change": -0.0125659974,
+        "project": "CMIP5",
+        "model": "CSIRO-Mk3-6-0",
+        "member": "r10i1p1"
+      },
+      {
+        "dataset": "CMIP5_CSIRO-Mk3-6-0_r1i1p1",
+        "tas_bias": 5.9568063416,
+        "pr_bias": 1.5519957715,
+        "tas_change": 1.8409383297,
+        "pr_change": -0.0232917635,
+        "project": "CMIP5",
+        "model": "CSIRO-Mk3-6-0",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_CSIRO-Mk3-6-0_r2i1p1",
+        "tas_bias": 5.8796805967,
+        "pr_bias": 1.5652699295,
+        "tas_change": 2.027119875,
+        "pr_change": 0.0004691101,
+        "project": "CMIP5",
+        "model": "CSIRO-Mk3-6-0",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_CSIRO-Mk3-6-0_r3i1p1",
+        "tas_bias": 5.7525554203,
+        "pr_bias": 1.5583897903,
+        "tas_change": 2.0321297646,
+        "pr_change": -0.016978318,
+        "project": "CMIP5",
+        "model": "CSIRO-Mk3-6-0",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_CSIRO-Mk3-6-0_r4i1p1",
+        "tas_bias": 6.4656338219,
+        "pr_bias": 1.5744951566,
+        "tas_change": 2.2679240704,
+        "pr_change": -0.0030473414,
+        "project": "CMIP5",
+        "model": "CSIRO-Mk3-6-0",
+        "member": "r4i1p1"
+      },
+      {
+        "dataset": "CMIP5_CSIRO-Mk3-6-0_r5i1p1",
+        "tas_bias": 6.484481454,
+        "pr_bias": 1.5422922848,
+        "tas_change": 2.3417124748,
+        "pr_change": 0.0313277871,
+        "project": "CMIP5",
+        "model": "CSIRO-Mk3-6-0",
+        "member": "r5i1p1"
+      },
+      {
+        "dataset": "CMIP5_CSIRO-Mk3-6-0_r6i1p1",
+        "tas_bias": 6.2047852689,
+        "pr_bias": 1.5562768847,
+        "tas_change": 1.9593162537,
+        "pr_change": 0.0005388647,
+        "project": "CMIP5",
+        "model": "CSIRO-Mk3-6-0",
+        "member": "r6i1p1"
+      },
+      {
+        "dataset": "CMIP5_CSIRO-Mk3-6-0_r7i1p1",
+        "tas_bias": 6.1533988832,
+        "pr_bias": 1.5467309021,
+        "tas_change": 1.6635613441,
+        "pr_change": -0.0281137652,
+        "project": "CMIP5",
+        "model": "CSIRO-Mk3-6-0",
+        "member": "r7i1p1"
+      },
+      {
+        "dataset": "CMIP5_CSIRO-Mk3-6-0_r8i1p1",
+        "tas_bias": 5.8466631915,
+        "pr_bias": 1.550294295,
+        "tas_change": 1.4615678787,
+        "pr_change": -0.0243127137,
+        "project": "CMIP5",
+        "model": "CSIRO-Mk3-6-0",
+        "member": "r8i1p1"
+      },
+      {
+        "dataset": "CMIP5_CSIRO-Mk3-6-0_r9i1p1",
+        "tas_bias": 5.8500084548,
+        "pr_bias": 1.5593254091,
+        "tas_change": 1.9295476675,
+        "pr_change": -0.025868241,
+        "project": "CMIP5",
+        "model": "CSIRO-Mk3-6-0",
+        "member": "r9i1p1"
+      },
+      {
+        "dataset": "CMIP5_CanESM2_r1i1p1",
+        "tas_bias": 3.4014496484,
+        "pr_bias": 1.4892075263,
+        "tas_change": 2.33289361,
+        "pr_change": 0.0591554879,
+        "project": "CMIP5",
+        "model": "CanESM2",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_CanESM2_r2i1p1",
+        "tas_bias": 3.3439997236,
+        "pr_bias": 1.4716114213,
+        "tas_change": 2.7911520004,
+        "pr_change": 0.0827985841,
+        "project": "CMIP5",
+        "model": "CanESM2",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_CanESM2_r3i1p1",
+        "tas_bias": 3.4565745091,
+        "pr_bias": 1.5010218088,
+        "tas_change": 2.4309613705,
+        "pr_change": 0.099559614,
+        "project": "CMIP5",
+        "model": "CanESM2",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_CanESM2_r4i1p1",
+        "tas_bias": 3.4346427331,
+        "pr_bias": 1.4978935582,
+        "tas_change": 2.6067676544,
+        "pr_change": 0.0790436667,
+        "project": "CMIP5",
+        "model": "CanESM2",
+        "member": "r4i1p1"
+      },
+      {
+        "dataset": "CMIP5_CanESM2_r5i1p1",
+        "tas_bias": 3.4988667046,
+        "pr_bias": 1.4962842909,
+        "tas_change": 2.797765255,
+        "pr_change": 0.0740682099,
+        "project": "CMIP5",
+        "model": "CanESM2",
+        "member": "r5i1p1"
+      },
+      {
+        "dataset": "CMIP5_EC-EARTH_r12i1p1",
+        "tas_bias": 2.9668531817,
+        "pr_bias": 1.4597037844,
+        "tas_change": 1.9373605251,
+        "pr_change": 0.0423526828,
+        "project": "CMIP5",
+        "model": "EC-EARTH",
+        "member": "r12i1p1"
+      },
+      {
+        "dataset": "CMIP5_EC-EARTH_r13i1p1",
+        "tas_bias": 2.9745020017,
+        "pr_bias": 1.4203724761,
+        "tas_change": 1.9817142487,
+        "pr_change": 0.0211384485,
+        "project": "CMIP5",
+        "model": "EC-EARTH",
+        "member": "r13i1p1"
+      },
+      {
+        "dataset": "CMIP5_EC-EARTH_r1i1p1",
+        "tas_bias": 2.9227015459,
+        "pr_bias": 1.4481508642,
+        "tas_change": 1.5150760412,
+        "pr_change": 0.0166540488,
+        "project": "CMIP5",
+        "model": "EC-EARTH",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_EC-EARTH_r2i1p1",
+        "tas_bias": 2.9823114466,
+        "pr_bias": 1.4344743895,
+        "tas_change": 2.0635945797,
+        "pr_change": 0.0175733333,
+        "project": "CMIP5",
+        "model": "EC-EARTH",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_EC-EARTH_r8i1p1",
+        "tas_bias": 2.9035846048,
+        "pr_bias": 1.4359766212,
+        "tas_change": 1.6000072956,
+        "pr_change": 0.0183269691,
+        "project": "CMIP5",
+        "model": "EC-EARTH",
+        "member": "r8i1p1"
+      },
+      {
+        "dataset": "CMIP5_EC-EARTH_r9i1p1",
+        "tas_bias": 2.8804570055,
+        "pr_bias": 1.4509360657,
+        "tas_change": 1.6947159767,
+        "pr_change": 0.0323729695,
+        "project": "CMIP5",
+        "model": "EC-EARTH",
+        "member": "r9i1p1"
+      },
+      {
+        "dataset": "CMIP5_FGOALS-g2_r1i1p1",
+        "tas_bias": 7.0262204688,
+        "pr_bias": 1.5071442546,
+        "tas_change": 2.0450832844,
+        "pr_change": 0.0631222138,
+        "project": "CMIP5",
+        "model": "FGOALS-g2",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_FGOALS-s2_r1i1p1",
+        "tas_bias": 5.2512240702,
+        "pr_bias": 1.6661627608,
+        "tas_change": 2.2787673473,
+        "pr_change": 0.0773982287,
+        "project": "CMIP5",
+        "model": "FGOALS-s2",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_FGOALS-s2_r2i1p1",
+        "tas_bias": 5.2595434797,
+        "pr_bias": 1.6580397887,
+        "tas_change": 2.3800876141,
+        "pr_change": 0.0735095724,
+        "project": "CMIP5",
+        "model": "FGOALS-s2",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_FGOALS-s2_r3i1p1",
+        "tas_bias": 5.1673108712,
+        "pr_bias": 1.6569616801,
+        "tas_change": 2.4160473347,
+        "pr_change": 0.0619175476,
+        "project": "CMIP5",
+        "model": "FGOALS-s2",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_FIO-ESM_r1i1p1",
+        "tas_bias": 3.5505136175,
+        "pr_bias": 1.5127225609,
+        "tas_change": 0.5422717333,
+        "pr_change": -0.0802919007,
+        "project": "CMIP5",
+        "model": "FIO-ESM",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_FIO-ESM_r2i1p1",
+        "tas_bias": 3.5320850586,
+        "pr_bias": 1.4917875571,
+        "tas_change": 0.4109327793,
+        "pr_change": -0.0773859751,
+        "project": "CMIP5",
+        "model": "FIO-ESM",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_FIO-ESM_r3i1p1",
+        "tas_bias": 3.618958875,
+        "pr_bias": 1.5320543408,
+        "tas_change": 0.5936401486,
+        "pr_change": -0.0912684842,
+        "project": "CMIP5",
+        "model": "FIO-ESM",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_GFDL-CM3_r1i1p1",
+        "tas_bias": 3.1470932944,
+        "pr_bias": 1.4678200213,
+        "tas_change": 3.3250186443,
+        "pr_change": 0.0110364875,
+        "project": "CMIP5",
+        "model": "GFDL-CM3",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_GFDL-ESM2G_r1i1p1",
+        "tas_bias": 4.1085277141,
+        "pr_bias": 1.4552374344,
+        "tas_change": 1.3549005985,
+        "pr_change": 0.0106117423,
+        "project": "CMIP5",
+        "model": "GFDL-ESM2G",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_GFDL-ESM2M_r1i1p1",
+        "tas_bias": 3.73523084,
+        "pr_bias": 1.4783992191,
+        "tas_change": 1.6415808201,
+        "pr_change": 0.0213617321,
+        "project": "CMIP5",
+        "model": "GFDL-ESM2M",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-H-CC_r1i1p1",
+        "tas_bias": 3.8644036849,
+        "pr_bias": 1.6310726397,
+        "tas_change": 2.0517811775,
+        "pr_change": 0.0351183825,
+        "project": "CMIP5",
+        "model": "GISS-E2-H-CC",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-H_r1i1p1",
+        "tas_bias": 3.8238917246,
+        "pr_bias": 1.68617117,
+        "tas_change": 2.222556591,
+        "pr_change": 0.0423045671,
+        "project": "CMIP5",
+        "model": "GISS-E2-H",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-H_r1i1p2",
+        "tas_bias": 3.8793692172,
+        "pr_bias": 1.7131968973,
+        "tas_change": 2.1752719879,
+        "pr_change": 0.0421019133,
+        "project": "CMIP5",
+        "model": "GISS-E2-H",
+        "member": "r1i1p2"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-H_r1i1p3",
+        "tas_bias": 3.6167081809,
+        "pr_bias": 1.7149161895,
+        "tas_change": 2.6182591915,
+        "pr_change": 0.0907900085,
+        "project": "CMIP5",
+        "model": "GISS-E2-H",
+        "member": "r1i1p3"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-H_r2i1p1",
+        "tas_bias": 3.7013777602,
+        "pr_bias": 1.6966427624,
+        "tas_change": 2.5113687515,
+        "pr_change": 0.1089385511,
+        "project": "CMIP5",
+        "model": "GISS-E2-H",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-H_r2i1p3",
+        "tas_bias": 3.7690471821,
+        "pr_bias": 1.696506107,
+        "tas_change": 2.8996095657,
+        "pr_change": 0.1130255147,
+        "project": "CMIP5",
+        "model": "GISS-E2-H",
+        "member": "r2i1p3"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-R-CC_r1i1p1",
+        "tas_bias": 4.3312105329,
+        "pr_bias": 1.5821462273,
+        "tas_change": 1.8129783869,
+        "pr_change": 0.0439396472,
+        "project": "CMIP5",
+        "model": "GISS-E2-R-CC",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-R_r1i1p1",
+        "tas_bias": 4.0923565392,
+        "pr_bias": 1.5894194921,
+        "tas_change": 1.8509008884,
+        "pr_change": 0.0192580062,
+        "project": "CMIP5",
+        "model": "GISS-E2-R",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-R_r1i1p2",
+        "tas_bias": 4.4863427651,
+        "pr_bias": 1.5934500112,
+        "tas_change": 2.1621518135,
+        "pr_change": 0.059535694,
+        "project": "CMIP5",
+        "model": "GISS-E2-R",
+        "member": "r1i1p2"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-R_r1i1p3",
+        "tas_bias": 4.3206106952,
+        "pr_bias": 1.5699691802,
+        "tas_change": 2.3697993755,
+        "pr_change": 0.0763941978,
+        "project": "CMIP5",
+        "model": "GISS-E2-R",
+        "member": "r1i1p3"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-R_r2i1p1",
+        "tas_bias": 4.1664582207,
+        "pr_bias": 1.5941945099,
+        "tas_change": 1.7509027719,
+        "pr_change": -0.0096739474,
+        "project": "CMIP5",
+        "model": "GISS-E2-R",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_GISS-E2-R_r2i1p3",
+        "tas_bias": 4.2363264395,
+        "pr_bias": 1.5743995834,
+        "tas_change": 2.2600069046,
+        "pr_change": 0.037289216,
+        "project": "CMIP5",
+        "model": "GISS-E2-R",
+        "member": "r2i1p3"
+      },
+      {
+        "dataset": "CMIP5_HadGEM2-AO_r1i1p1",
+        "tas_bias": 3.1829253216,
+        "pr_bias": 1.6636877334,
+        "tas_change": 2.1982631683,
+        "pr_change": -0.0303936117,
+        "project": "CMIP5",
+        "model": "HadGEM2-AO",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_HadGEM2-CC_r1i1p1",
+        "tas_bias": 3.7897589037,
+        "pr_bias": 1.6206950371,
+        "tas_change": 3.2021327019,
+        "pr_change": 0.0192332018,
+        "project": "CMIP5",
+        "model": "HadGEM2-CC",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_HadGEM2-CC_r2i1p1",
+        "tas_bias": 3.9406778473,
+        "pr_bias": 1.6593813887,
+        "tas_change": 3.0132849216,
+        "pr_change": 0.0453841307,
+        "project": "CMIP5",
+        "model": "HadGEM2-CC",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_HadGEM2-CC_r3i1p1",
+        "tas_bias": 3.4857106209,
+        "pr_bias": 1.6697339364,
+        "tas_change": 2.3876316547,
+        "pr_change": -0.0272022627,
+        "project": "CMIP5",
+        "model": "HadGEM2-CC",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_HadGEM2-ES_r1i1p1",
+        "tas_bias": 3.1531991103,
+        "pr_bias": 1.6102799498,
+        "tas_change": 2.6698408127,
+        "pr_change": 0.0033488618,
+        "project": "CMIP5",
+        "model": "HadGEM2-ES",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_HadGEM2-ES_r2i1p1",
+        "tas_bias": 3.1582457879,
+        "pr_bias": 1.638176118,
+        "tas_change": 2.9599163532,
+        "pr_change": 0.0087201926,
+        "project": "CMIP5",
+        "model": "HadGEM2-ES",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_HadGEM2-ES_r3i1p1",
+        "tas_bias": 3.1318611408,
+        "pr_bias": 1.6123394155,
+        "tas_change": 2.5987210274,
+        "pr_change": -0.0256397343,
+        "project": "CMIP5",
+        "model": "HadGEM2-ES",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_HadGEM2-ES_r4i1p1",
+        "tas_bias": 3.1865969541,
+        "pr_bias": 1.6248275125,
+        "tas_change": 2.7170965672,
+        "pr_change": -0.0149628047,
+        "project": "CMIP5",
+        "model": "HadGEM2-ES",
+        "member": "r4i1p1"
+      },
+      {
+        "dataset": "CMIP5_IPSL-CM5A-LR_r1i1p1",
+        "tas_bias": 5.1653707931,
+        "pr_bias": 1.5812119943,
+        "tas_change": 3.1549932957,
+        "pr_change": 0.0248703763,
+        "project": "CMIP5",
+        "model": "IPSL-CM5A-LR",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_IPSL-CM5A-LR_r2i1p1",
+        "tas_bias": 4.5581715693,
+        "pr_bias": 1.5516931589,
+        "tas_change": 2.7699415684,
+        "pr_change": 0.0219830644,
+        "project": "CMIP5",
+        "model": "IPSL-CM5A-LR",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_IPSL-CM5A-LR_r3i1p1",
+        "tas_bias": 5.0156633539,
+        "pr_bias": 1.5794458892,
+        "tas_change": 3.2384333611,
+        "pr_change": 0.0196951277,
+        "project": "CMIP5",
+        "model": "IPSL-CM5A-LR",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_IPSL-CM5A-LR_r4i1p1",
+        "tas_bias": 4.959749681,
+        "pr_bias": 1.5706899466,
+        "tas_change": 2.9573345184,
+        "pr_change": 0.0101715353,
+        "project": "CMIP5",
+        "model": "IPSL-CM5A-LR",
+        "member": "r4i1p1"
+      },
+      {
+        "dataset": "CMIP5_IPSL-CM5A-MR_r1i1p1",
+        "tas_bias": 3.4596778185,
+        "pr_bias": 1.5426402669,
+        "tas_change": 2.4438934326,
+        "pr_change": -0.0224287156,
+        "project": "CMIP5",
+        "model": "IPSL-CM5A-MR",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_IPSL-CM5B-LR_r1i1p1",
+        "tas_bias": 8.3270527245,
+        "pr_bias": 1.6545234176,
+        "tas_change": 3.1609568596,
+        "pr_change": 0.061429716,
+        "project": "CMIP5",
+        "model": "IPSL-CM5B-LR",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_MIROC-ESM-CHEM_r1i1p1",
+        "tas_bias": 3.4097641773,
+        "pr_bias": 1.5090517623,
+        "tas_change": 3.0998692513,
+        "pr_change": 0.1017520153,
+        "project": "CMIP5",
+        "model": "MIROC-ESM-CHEM",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_MIROC-ESM_r1i1p1",
+        "tas_bias": 3.4127262596,
+        "pr_bias": 1.4948591424,
+        "tas_change": 3.1352882385,
+        "pr_change": 0.1257667671,
+        "project": "CMIP5",
+        "model": "MIROC-ESM",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_MIROC5_r1i1p1",
+        "tas_bias": 3.5714668909,
+        "pr_bias": 1.5346452588,
+        "tas_change": 2.1812040806,
+        "pr_change": -0.0038301219,
+        "project": "CMIP5",
+        "model": "MIROC5",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_MIROC5_r2i1p1",
+        "tas_bias": 3.684881453,
+        "pr_bias": 1.5417415982,
+        "tas_change": 2.1885790825,
+        "pr_change": 0.0138093741,
+        "project": "CMIP5",
+        "model": "MIROC5",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_MIROC5_r3i1p1",
+        "tas_bias": 3.5216063544,
+        "pr_bias": 1.5565993935,
+        "tas_change": 2.0605967045,
+        "pr_change": -0.0080015502,
+        "project": "CMIP5",
+        "model": "MIROC5",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_MPI-ESM-LR_r1i1p1",
+        "tas_bias": 2.965755899,
+        "pr_bias": 1.5232729068,
+        "tas_change": 1.7457338572,
+        "pr_change": -0.0114528847,
+        "project": "CMIP5",
+        "model": "MPI-ESM-LR",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_MPI-ESM-LR_r2i1p1",
+        "tas_bias": 3.0072441626,
+        "pr_bias": 1.5352308404,
+        "tas_change": 1.8414349556,
+        "pr_change": -0.0469538663,
+        "project": "CMIP5",
+        "model": "MPI-ESM-LR",
+        "member": "r2i1p1"
+      },
+      {
+        "dataset": "CMIP5_MPI-ESM-LR_r3i1p1",
+        "tas_bias": 2.9368252699,
+        "pr_bias": 1.5208694745,
+        "tas_change": 1.8491691351,
+        "pr_change": -0.0098862868,
+        "project": "CMIP5",
+        "model": "MPI-ESM-LR",
+        "member": "r3i1p1"
+      },
+      {
+        "dataset": "CMIP5_MPI-ESM-MR_r1i1p1",
+        "tas_bias": 2.9936342,
+        "pr_bias": 1.529011329,
+        "tas_change": 1.5526695251,
+        "pr_change": -0.0046256147,
+        "project": "CMIP5",
+        "model": "MPI-ESM-MR",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_MRI-CGCM3_r1i1p1",
+        "tas_bias": 3.9899419977,
+        "pr_bias": 1.5267922532,
+        "tas_change": 2.00096035,
+        "pr_change": 0.0714616213,
+        "project": "CMIP5",
+        "model": "MRI-CGCM3",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_MRI-ESM1_r1i1p1",
+        "tas_bias": 3.6397170477,
+        "pr_bias": 1.4954715701,
+        "tas_change": 1.8290385008,
+        "pr_change": 0.0569559603,
+        "project": "CMIP5",
+        "model": "MRI-ESM1",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_NorESM1-ME_r1i1p1",
+        "tas_bias": 3.1698983377,
+        "pr_bias": 1.4034743006,
+        "tas_change": 2.0698833466,
+        "pr_change": 0.0144635751,
+        "project": "CMIP5",
+        "model": "NorESM1-ME",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_NorESM1-M_r1i1p1",
+        "tas_bias": 3.2332611508,
+        "pr_bias": 1.4206728236,
+        "tas_change": 1.9719798565,
+        "pr_change": 0.0233490731,
+        "project": "CMIP5",
+        "model": "NorESM1-M",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_bcc-csm1-1-m_r1i1p1",
+        "tas_bias": 4.1017961806,
+        "pr_bias": 1.5907336709,
+        "tas_change": 1.9740126133,
+        "pr_change": 0.0330119603,
+        "project": "CMIP5",
+        "model": "bcc-csm1-1-m",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_bcc-csm1-1_r1i1p1",
+        "tas_bias": 4.1090934479,
+        "pr_bias": 1.5497063688,
+        "tas_change": 2.2191946507,
+        "pr_change": 0.0258971586,
+        "project": "CMIP5",
+        "model": "bcc-csm1-1",
+        "member": "r1i1p1"
+      },
+      {
+        "dataset": "CMIP5_inmcm4_r1i1p1",
+        "tas_bias": 3.8820751129,
+        "pr_bias": 1.5547616891,
+        "tas_change": 1.1920846701,
+        "pr_change": -0.0131904766,
+        "project": "CMIP5",
+        "model": "inmcm4",
+        "member": "r1i1p1"
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "continuousWidth": 400,
+      "continuousHeight": 300
+    },
+    "legend": {
+      "disable": true
+    }
+  },
+  "params": [
+    {
+      "name": "brush",
+      "select": {
+        "type": "interval",
+        "on": "[pointerdown[event.altKey], pointerup] > pointermove",
+        "translate": "[pointerdown[event.altKey], pointerup] > pointermove",
+        "zoom": "wheel![event.altKey]"
+      }
+    },
+    {
+      "name": "panzoom",
+      "select": {
+        "type": "interval",
+        "on": "[pointerdown[event.ctrlKey], pointerup] > pointermove",
+        "translate": "[pointerdown[event.ctrlKey], pointerup] > pointermove!",
+        "zoom": "wheel![event.ctrlKey]"
+      },
+      "bind": "scales"
+    },
+    {
+      "name": "query",
+      "select": {
+        "type": "point",
+        "fields": [
+          "dataset"
+        ],
+        "clear": "dblclick"
+      }
+    }
+  ],
+  "hconcat": [
+    {
+      "title": "Temperature (K)",
+      "mark": {
+        "type": "circle",
+        "size": 150
+      },
+      "encoding": {
+        "x": {
+          "field": "tas_bias",
+          "type": "quantitative",
+          "title": "Bias with respect to ERA5 (1986-2010)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "y": {
+          "field": "tas_change",
+          "type": "quantitative",
+          "title": "Projected change (2050 versus 2000)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "fill": {
+          "condition": {
+            "param": "brush",
+            "field": "model",
+            "type": "nominal"
+          },
+          "value": "lightgray"
+        },
+        "stroke": {
+          "condition": {
+            "param": "query",
+            "value": "black",
+            "empty": false
+          },
+          "value": "transparent"
+        },
+        "tooltip": [
+          {
+            "field": "dataset",
+            "type": "nominal"
+          },
+          {
+            "field": "project",
+            "type": "nominal"
+          },
+          {
+            "field": "model",
+            "type": "nominal"
+          },
+          {
+            "field": "member",
+            "type": "nominal"
+          },
+          {
+            "field": "tas_bias",
+            "type": "quantitative",
+            "title": "bias",
+            "format": ".3g"
+          },
+          {
+            "field": "tas_change",
+            "type": "quantitative",
+            "title": "change",
+            "format": ".3g"
+          }
+        ]
+      }
+    },
+    {
+      "title": "Precipitation (mm/day)",
+      "mark": {
+        "type": "circle",
+        "size": 150
+      },
+      "encoding": {
+        "x": {
+          "field": "pr_bias",
+          "type": "quantitative",
+          "title": "Bias with respect to ERA5 (1986-2010)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "y": {
+          "field": "pr_change",
+          "type": "quantitative",
+          "title": "Projected change (2050 versus 2000)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "fill": {
+          "condition": {
+            "param": "brush",
+            "field": "model",
+            "type": "nominal"
+          },
+          "value": "lightgray"
+        },
+        "stroke": {
+          "condition": {
+            "param": "query",
+            "value": "black",
+            "empty": false
+          },
+          "value": "transparent"
+        },
+        "tooltip": [
+          {
+            "field": "dataset",
+            "type": "nominal"
+          },
+          {
+            "field": "project",
+            "type": "nominal"
+          },
+          {
+            "field": "model",
+            "type": "nominal"
+          },
+          {
+            "field": "member",
+            "type": "nominal"
+          },
+          {
+            "field": "pr_bias",
+            "type": "quantitative",
+            "title": "bias",
+            "format": ".3g"
+          },
+          {
+            "field": "pr_change",
+            "type": "quantitative",
+            "title": "change",
+            "format": ".3g"
+          }
+        ]
+      }
+    }
+  ]
+}

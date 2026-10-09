@@ -9,7 +9,7 @@
       "Area is set to Europe (lon 0-39; lat 30-76.25).",
       "All data are taken from the SSP5-8.5 scenario."
     ],
-    "recipe_output": "recipe_impact_cmip6_20261009_115350"
+    "recipe_output": "recipe_impact_cmip6_20261009_154152"
   },
   "data": {
     "values": [
@@ -3976,7 +3976,7 @@
         "x": {
           "field": "tas_bias",
           "type": "quantitative",
-          "title": "Bias (RMSD of all gridpoints)",
+          "title": "Bias with respect to ERA5 (1986-2015)",
           "scale": {
             "zero": false
           }
@@ -3984,7 +3984,7 @@
         "y": {
           "field": "tas_change",
           "type": "quantitative",
-          "title": "Mean change (Future - Reference)",
+          "title": "Projected change (2050 versus 2000)",
           "scale": {
             "zero": false
           }
@@ -4047,7 +4047,7 @@
         "x": {
           "field": "pr_bias",
           "type": "quantitative",
-          "title": "Bias (RMSD of all gridpoints)",
+          "title": "Bias with respect to ERA5 (1986-2015)",
           "scale": {
             "zero": false
           }
@@ -4055,7 +4055,7 @@
         "y": {
           "field": "pr_change",
           "type": "quantitative",
-          "title": "Mean change (Future - Reference)",
+          "title": "Projected change (2050 versus 2000)",
           "scale": {
             "zero": false
           }
