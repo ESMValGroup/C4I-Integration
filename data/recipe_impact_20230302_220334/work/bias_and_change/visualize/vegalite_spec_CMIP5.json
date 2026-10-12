@@ -996,25 +996,6 @@
   },
   "params": [
     {
-      "name": "brush",
-      "select": {
-        "type": "interval",
-        "on": "[pointerdown[event.altKey], pointerup] > pointermove",
-        "translate": "[pointerdown[event.altKey], pointerup] > pointermove",
-        "zoom": "wheel![event.altKey]"
-      }
-    },
-    {
-      "name": "panzoom",
-      "select": {
-        "type": "interval",
-        "on": "[pointerdown[event.ctrlKey], pointerup] > pointermove",
-        "translate": "[pointerdown[event.ctrlKey], pointerup] > pointermove!",
-        "zoom": "wheel![event.ctrlKey]"
-      },
-      "bind": "scales"
-    },
-    {
       "name": "query",
       "select": {
         "type": "point",
@@ -1050,12 +1031,8 @@
           }
         },
         "fill": {
-          "condition": {
-            "param": "brush",
-            "field": "model",
-            "type": "nominal"
-          },
-          "value": "lightgray"
+          "field": "model",
+          "type": "nominal"
         },
         "stroke": {
           "condition": {
@@ -1121,12 +1098,8 @@
           }
         },
         "fill": {
-          "condition": {
-            "param": "brush",
-            "field": "model",
-            "type": "nominal"
-          },
-          "value": "lightgray"
+          "field": "model",
+          "type": "nominal"
         },
         "stroke": {
           "condition": {
