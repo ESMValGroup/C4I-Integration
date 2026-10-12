@@ -141,6 +141,9 @@ highlights the run in the table.
 
 On narrow screens the charts are shown above each other.
 
+The page follows the light or dark theme of the system. The button in the top
+right corner switches the theme, and the browser remembers that choice.
+
 ## URL parameters
 
 - `project`: the project to show, e.g. `?project=CORDEX-CMIP6`. Defaults to CMIP6.

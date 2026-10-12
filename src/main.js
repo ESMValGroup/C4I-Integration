@@ -14,6 +14,8 @@ const CLICK_TOLERANCE = 5;
 const DOUBLE_CLICK_TIME = 400;
 // Size of the ring around highlighted points, see chartSpec
 const RING_SIZE = 800;
+// Whether a run is highlighted, as a Vega expression
+const HIGHLIGHTED = "indexof(highlight, datum.dataset) >= 0";
 
 const projectButtons = document.getElementById("projects");
 const notesList = document.getElementById("notes");
@@ -31,7 +33,22 @@ const suggestCountValue = document.getElementById("suggest-count-value");
 const suggestExclude = document.getElementById("suggest-exclude");
 const suggestExcludeValue = document.getElementById("suggest-exclude-value");
 const suggestResult = document.querySelector("#suggest-result small");
-const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+const themeButton = document.getElementById("theme");
+const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+// The theme chosen with the theme button, if any, is remembered in the
+// browser. Otherwise the page follows the theme of the system.
+const THEME_KEY = "theme";
+// Icons for the theme button, drawn in the color of its text. Unicode
+// symbols are shown as colored emoji on some systems.
+const icon = (content) =>
+  `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" ` +
+  `stroke="currentColor" stroke-width="2" stroke-linecap="round" ` +
+  `aria-hidden="true">${content}</svg>`;
+const SUN_ICON = icon(
+  '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2' +
+    'M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+);
+const MOON_ICON = icon('<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>');
 const numberFormat = new Intl.NumberFormat("en", {
   maximumSignificantDigits: 3,
   signDisplay: "exceptZero",
@@ -39,6 +56,7 @@ const numberFormat = new Intl.NumberFormat("en", {
 
 // Maps each project to the recipe output directory to show it from
 let recipeRuns;
+let dark = (storedTheme() ?? (systemDark.matches ? "dark" : "light")) === "dark";
 // The project that is shown: its specification, rows, models and selection
 let current;
 // The embedded charts, one for each variable
@@ -366,10 +384,15 @@ function chartSpec(spec, view) {
   if (dark) {
     encoding.stroke.condition.value = "white";
   }
-  // Make the selected runs stand out
+  // Make the selected runs stand out, and keep the highlighted runs visible,
+  // see setHighlight. Faded points are harder to see on a dark background,
+  // so fade them less there.
   encoding.opacity = {
-    condition: { param: "query", value: 1 },
-    value: 0.2,
+    condition: [
+      { param: "query", value: 1 },
+      { test: HIGHLIGHTED, value: 1 },
+    ],
+    value: dark ? 0.3 : 0.2,
   };
   // A thin outline is enough, while staying distinct from the ring around
   // highlighted runs
@@ -396,7 +419,7 @@ function chartSpec(spec, view) {
       },
       {
         // Drawn on top, so highlighted runs can be found among the others
-        transform: [{ filter: "indexof(highlight, datum.dataset) >= 0" }],
+        transform: [{ filter: HIGHLIGHTED }],
         mark: {
           type: "point",
           filled: false,
@@ -489,7 +512,17 @@ function chartControls(chart, title) {
 async function embedChart(spec, container) {
   const result = await vegaEmbed(container, spec, {
     theme: dark ? "dark" : undefined,
-    config: { background: "transparent" },
+    config: {
+      background: "transparent",
+      // Slightly larger than the default, to suit the text around the charts
+      axis: {
+        labelFontSize: 12,
+        titleFontSize: 12,
+        // The grid of the dark theme stands out more than the faded points
+        ...(dark && { gridColor: "#3a404c" }),
+      },
+      title: { fontSize: 14 },
+    },
   });
   const { view } = result;
   // Panning ends with a click, which should not select the point below it
@@ -554,6 +587,51 @@ async function render() {
   results.forEach((chart, i) =>
     figures[i].prepend(chartControls(chart, shown.views[i].title)),
   );
+}
+
+// Browser storage may be unavailable, e.g. in a private window
+function storedTheme() {
+  try {
+    return localStorage.getItem(THEME_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function storeTheme(theme) {
+  try {
+    localStorage.setItem(THEME_KEY, theme);
+  } catch {
+    // The choice then only lasts until the page is reloaded
+  }
+}
+
+async function setTheme(theme) {
+  dark = theme === "dark";
+  document.documentElement.dataset.theme = theme;
+  const other = dark ? "light" : "dark";
+  themeButton.innerHTML = dark ? SUN_ICON : MOON_ICON;
+  themeButton.ariaLabel = `Switch to ${other} theme`;
+  themeButton.title = `Switch to ${other} theme`;
+  if (embedded.length > 0) {
+    await rerender();
+  }
+}
+
+// Draw the charts again, e.g. in another theme, keeping their zoom
+async function rerender() {
+  const zoomed = embedded.map((chart) =>
+    zoomSignals(chart.spec).map(({ signal }) => chart.view.signal(signal)),
+  );
+  await render();
+  embedded.forEach((chart, i) => {
+    zoomSignals(chart.spec).forEach(({ signal }, j) =>
+      chart.view.signal(signal, zoomed[i]?.[j] ?? null),
+    );
+    chart.view.runAsync();
+  });
+  // The colors of the models may have changed
+  showSelection();
 }
 
 // Show which button of a group is chosen
@@ -671,7 +749,21 @@ function setUpSuggest() {
   });
 }
 
+function setUpTheme() {
+  themeButton.addEventListener("click", () => {
+    const theme = dark ? "light" : "dark";
+    storeTheme(theme);
+    setTheme(theme).catch(showError);
+  });
+  systemDark.addEventListener("change", (event) => {
+    if (!storedTheme()) {
+      setTheme(event.matches ? "dark" : "light").catch(showError);
+    }
+  });
+}
+
 function setUpControls(projects) {
+  setUpTheme();
   buttonGroup(
     projectButtons,
     projects.map((project) => ({ value: project, label: project })),
@@ -713,6 +805,7 @@ async function main() {
       : projects[0];
 
   setUpControls(projects);
+  await setTheme(dark ? "dark" : "light");
   await showProject(initialProject, params.getAll("dataset"));
 }
 

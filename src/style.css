@@ -1,6 +1,29 @@
+/* Pico enlarges the text on wider screens, up to 131.25%, which makes the
+   text larger than on most websites. Keep the size of the browser instead. */
+:root {
+  --pico-font-size: 100%;
+}
+
 /* Keep the width, and so the charts, the same when a scrollbar appears */
 html {
   scrollbar-gutter: stable;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--pico-spacing);
+}
+
+#theme {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
 }
 
 #projects {
