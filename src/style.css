@@ -59,6 +59,22 @@ html {
   margin: var(--pico-spacing) 0 0;
 }
 
+/* The color of the points of a model, outlined like the selected points */
+.swatch {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  margin-right: 0.4em;
+  vertical-align: -0.1em;
+  border: 2px solid var(--pico-color);
+  border-radius: 50%;
+}
+
+/* The rows of the runs that have a ring around them in the charts */
+#selection tr.highlighted > * {
+  background-color: color-mix(in srgb, var(--pico-primary) 12%, transparent);
+}
+
 .reason {
   display: block;
   font-weight: normal;

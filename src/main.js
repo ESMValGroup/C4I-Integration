@@ -12,6 +12,8 @@ const CLICK_TOLERANCE = 5;
 // Two clicks on the same point within this time, in ms, are a double click.
 // Double taps do not reliably cause dblclick events, so detect them here.
 const DOUBLE_CLICK_TIME = 400;
+// Size of the ring around highlighted points, see chartSpec
+const RING_SIZE = 800;
 
 const projectButtons = document.getElementById("projects");
 const notesList = document.getElementById("notes");
@@ -43,6 +45,8 @@ let current;
 let embedded = [];
 // The last click on a point, to detect double clicks
 let lastClick;
+// Rows of the table of selected runs, with the runs they show
+let highlightTargets = [];
 // How to suggest models, kept when switching projects
 const suggestSettings = { method: "corners" };
 
@@ -142,8 +146,59 @@ function button(text, onClick, properties = {}) {
   return el;
 }
 
+// A dot with the color of the points of a run in the charts
+function swatch(row) {
+  const el = element("span", { className: "swatch", ariaHidden: "true" });
+  const fill = embedded[0]?.view.scale("fill");
+  if (fill) {
+    el.style.backgroundColor = fill(row[current.colorField]);
+  }
+  return el;
+}
+
+// Show a ring around these runs in the charts, and highlight their rows
+function setHighlight(datasets) {
+  current.highlight = datasets;
+  for (const { view } of embedded) {
+    view.signal("highlight", datasets).runAsync();
+  }
+  for (const { el, datasets: shown } of highlightTargets) {
+    el.classList.toggle(
+      "highlighted",
+      datasets.length > 0 && shown.every((d) => datasets.includes(d)),
+    );
+  }
+}
+
+// Highlight these runs when hovering over or focusing a row of the table,
+// or when tapping it on a touch screen, which has no hover
+function highlightOn(el, datasets) {
+  highlightTargets.push({ el, datasets });
+  const same = () =>
+    current.highlight.length === datasets.length &&
+    datasets.every((d) => current.highlight.includes(d));
+  el.addEventListener("pointerenter", (event) => {
+    if (event.pointerType === "mouse") {
+      setHighlight(datasets);
+    }
+  });
+  el.addEventListener("pointerleave", (event) => {
+    if (event.pointerType === "mouse") {
+      setHighlight([]);
+    }
+  });
+  el.addEventListener("pointerup", (event) => {
+    if (event.pointerType !== "mouse" && !event.target.closest("button")) {
+      setHighlight(same() ? [] : datasets);
+    }
+  });
+  el.addEventListener("focusin", () => setHighlight(datasets));
+  el.addEventListener("focusout", () => setHighlight([]));
+}
+
 function selectionTable() {
   const variables = current.variables;
+  highlightTargets = [];
   const head = element("thead", {}, [
     element("tr", {}, [
       element("th", { scope: "col", rowSpan: 2, textContent: "Run" }),
@@ -196,6 +251,7 @@ function selectionTable() {
         [
           element("div", { className: "model-header" }, [
             element("span", {}, [
+              swatch(selected[0]),
               element("strong", { textContent: model }),
               ` · ${selected.length} of ${rows.length} ${rows.length === 1 ? "run" : "runs"}`,
               ...selected
@@ -229,6 +285,11 @@ function selectionTable() {
         ]),
       ]),
     );
+    highlightOn(
+      modelRow,
+      selected.map((row) => row.dataset),
+    );
+    runRows.forEach((el, i) => highlightOn(el, [selected[i].dataset]));
     bodies.push(element("tbody", {}, [modelRow, ...runRows]));
   }
   return element("table", {}, [head, ...bodies]);
@@ -242,6 +303,8 @@ function showSelection() {
       : [element("div", { className: "table-scroll" }, [selectionTable()])]),
   );
   noSelection.hidden = !empty;
+  // Rows of runs that are no longer selected cannot be highlighted
+  setHighlight(current.highlight.filter((d) => current.selected.has(d)));
   updateUrl();
 }
 
@@ -256,7 +319,7 @@ function setSelection(datasets) {
   }
   const tuples = () =>
     [...current.selected].map((dataset) => ({
-      unit: "",
+      unit: "layer_0",
       fields: [{ type: "E", field: "dataset" }],
       values: [dataset],
     }));
@@ -294,7 +357,6 @@ function toggleDataset(dataset) {
 // specification, so it works for specifications written by any version of
 // the ESMValTool diagnostic.
 function chartSpec(spec, view) {
-  const drag = "[pointerdown, window:pointerup] > window:pointermove!";
   const encoding = structuredClone(view.encoding);
   // Older specifications only color the points in a highlighted range
   if (encoding.fill.condition?.param) {
@@ -309,8 +371,10 @@ function chartSpec(spec, view) {
     condition: { param: "query", value: 1 },
     value: 0.2,
   };
+  // A thin outline is enough, while staying distinct from the ring around
+  // highlighted runs
   encoding.strokeWidth = {
-    condition: { param: "query", value: 2.5, empty: false },
+    condition: { param: "query", value: 1.5, empty: false },
     value: 1,
   };
   return {
@@ -321,40 +385,67 @@ function chartSpec(spec, view) {
     width: "container",
     height: CHART_HEIGHT,
     title: view.title,
-    // Clip, so points outside the zoomed in range are not drawn
-    mark: { ...view.mark, cursor: "pointer", clip: true },
-    encoding,
-    params: [
+    // The runs to show a ring around, see setHighlight
+    params: [{ name: "highlight", value: current.highlight }],
+    layer: [
       {
-        // Clicks are handled by toggleDataset, which updates both charts
-        name: "query",
-        value: [...current.selected].map((dataset) => ({ dataset })),
-        select: {
-          type: "point",
-          fields: ["dataset"],
-          on: "click[false]",
-          clear: false,
-        },
+        // Clip, so points outside the zoomed in range are not drawn
+        mark: { ...view.mark, cursor: "pointer", clip: true },
+        encoding,
+        params: chartParams(),
       },
       {
-        name: "zoom",
-        select: {
-          type: "interval",
-          on: drag,
-          translate: drag,
-          // Plain scrolling scrolls the page
-          zoom: "wheel![event.ctrlKey || event.metaKey]",
-          clear: false,
+        // Drawn on top, so highlighted runs can be found among the others
+        transform: [{ filter: "indexof(highlight, datum.dataset) >= 0" }],
+        mark: {
+          type: "point",
+          filled: false,
+          size: RING_SIZE,
+          strokeWidth: 3,
+          color: dark ? "white" : "black",
+          cursor: "pointer",
+          clip: true,
         },
-        bind: "scales",
+        encoding: { x: encoding.x, y: encoding.y },
       },
     ],
   };
 }
 
-function zoomSignals(view) {
+// Selecting runs, and panning and zooming
+function chartParams() {
+  const drag = "[pointerdown, window:pointerup] > window:pointermove!";
+  return [
+    {
+      // Clicks are handled by toggleDataset, which updates both charts
+      name: "query",
+      value: [...current.selected].map((dataset) => ({ dataset })),
+      select: {
+        type: "point",
+        fields: ["dataset"],
+        on: "click[false]",
+        clear: false,
+      },
+    },
+    {
+      name: "zoom",
+      select: {
+        type: "interval",
+        on: drag,
+        translate: drag,
+        // Plain scrolling scrolls the page
+        zoom: "wheel![event.ctrlKey || event.metaKey]",
+        clear: false,
+      },
+      bind: "scales",
+    },
+  ];
+}
+
+function zoomSignals(spec) {
+  const { encoding } = spec.layer[0];
   return ["x", "y"].map((channel) => ({
-    signal: `zoom_${view.encoding[channel].field}`,
+    signal: `zoom_${encoding[channel].field}`,
     scale: channel,
   }));
 }
@@ -406,6 +497,14 @@ async function embedChart(spec, container) {
   view.addEventListener("pointerdown", (event) => {
     down = event;
   });
+  // Show where the run below the pointer is in the other chart and the table
+  view.addEventListener("mouseover", (_event, item) => {
+    const dataset = item?.datum?.dataset;
+    if (dataset) {
+      setHighlight([dataset]);
+    }
+  });
+  view.addEventListener("mouseout", () => setHighlight([]));
   view.addEventListener("click", (event, item) => {
     const dataset = item?.datum?.dataset;
     const moved = down
@@ -507,6 +606,9 @@ async function showProject(project, requested) {
     selected: new Set(findDatasets(rows, requested)),
     // Why each suggested run was suggested
     reasons: new Map(),
+    // The runs that are highlighted, see setHighlight
+    highlight: [],
+    colorField: views[0].encoding.fill.condition?.field ?? views[0].encoding.fill.field,
   };
   suggestResult.textContent = "";
   showAvailableMethods();
@@ -582,6 +684,7 @@ function setUpControls(projects) {
   window.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       setSelection([]);
+      setHighlight([]);
     }
   });
 

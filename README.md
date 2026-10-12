@@ -132,7 +132,11 @@ closest to the mean of the runs of that model, with one of these methods:
 - **Most different**: the model closest to the median, then each time the
   model whose projected change differs most from those chosen so far.
 
-The table of selected runs shows the bias and change of each selected run.
+The table of selected runs shows the bias and change of each selected run,
+and the color of its model in the charts. Hovering over a run in the table,
+or tapping it on a touch screen, shows a ring around it in both charts.
+Hovering over a point in a chart shows the same ring in the other chart and
+highlights the run in the table.
 "Select all runs" next to a model selects the rest of its ensemble.
 <kbd>Esc</kbd> clears the selection.
 
