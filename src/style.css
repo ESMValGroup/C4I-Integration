@@ -136,6 +136,12 @@ html {
   color: var(--pico-muted-color);
 }
 
+#unavailable {
+  padding: calc(var(--pico-spacing) / 2) var(--pico-spacing);
+  border-left: 0.25rem solid var(--pico-primary);
+  background-color: var(--pico-card-sectioning-background-color);
+}
+
 #error {
   color: var(--pico-del-color);
 }

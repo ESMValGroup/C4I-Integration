@@ -21,6 +21,7 @@ const projectButtons = document.getElementById("projects");
 const notesList = document.getElementById("notes");
 const charts = document.getElementById("charts");
 const errorMessage = document.getElementById("error");
+const unavailableMessage = document.getElementById("unavailable");
 const selectionContainer = document.getElementById("selection");
 const noSelection = document.getElementById("no-selection");
 const copyLink = document.getElementById("copy-link");
@@ -138,6 +139,37 @@ function findDatasets(rows, requested) {
       ),
     )
     .map((row) => row.dataset);
+}
+
+// The requested datasets that match none of the runs
+function missingDatasets(rows, requested) {
+  return requested.filter(
+    (name) =>
+      !rows.some((row) =>
+        [row.dataset, modelName(row), row.model].includes(name),
+      ),
+  );
+}
+
+// Links to this page may name projects and datasets that it has no results
+// for, e.g. misspelled names or models that do not provide all variables and
+// experiments needed to calculate the bias and projected change
+function showUnavailable(missingProject, missing) {
+  const quote = (names) => names.map((name) => `"${name}"`).join(", ");
+  let message = "";
+  if (missingProject) {
+    message =
+      `No results are available for project "${missingProject}", ` +
+      `showing ${current.project} instead.`;
+  } else if (missing.length > 0) {
+    message =
+      `No results are available for ${quote(missing)} in ${current.project}. ` +
+      "Either the name is misspelled, or the model does not provide all " +
+      "variables and experiments needed to calculate the bias and projected " +
+      "change.";
+  }
+  unavailableMessage.textContent = message;
+  unavailableMessage.hidden = !message;
 }
 
 // A short name for a run of a model: its ensemble member, e.g. r1i1p1f1
@@ -719,10 +751,11 @@ function buttonGroup(group, options, onClick) {
   );
 }
 
-async function showProject(project, requested) {
+async function showProject(project, requested, missingProject) {
   pressButton(projectButtons, project);
   charts.ariaBusy = "true";
   errorMessage.hidden = true;
+  unavailableMessage.hidden = true;
   const spec = await fetchJson(specUrl(project));
   if (projectButtons.querySelector("[aria-pressed=true]").value !== project) {
     return; // another project was selected in the meantime
@@ -746,7 +779,7 @@ async function showProject(project, requested) {
       bias: view.encoding.x.field,
       change: view.encoding.y.field,
     })),
-    selected: new Set(findDatasets(rows, requested)),
+    selected: new Set(missingProject ? [] : findDatasets(rows, requested)),
     // Why each suggested run was suggested
     reasons: new Map(),
     // The runs that are highlighted, see setHighlight
@@ -755,6 +788,11 @@ async function showProject(project, requested) {
     tapped: undefined,
     colorField: views[0].encoding.fill.condition?.field ?? views[0].encoding.fill.field,
   };
+  // The datasets of another project are not looked for in this one
+  showUnavailable(
+    missingProject,
+    missingProject ? [] : missingDatasets(rows, requested),
+  );
   suggestResult.textContent = "";
   showAvailableMethods();
   await render();
@@ -873,7 +911,11 @@ async function main() {
 
   setUpControls(projects);
   await setTheme(dark ? "dark" : "light");
-  await showProject(initialProject, params.getAll("dataset"));
+  const missingProject =
+    requestedProject && requestedProject !== initialProject
+      ? requestedProject
+      : undefined;
+  await showProject(initialProject, params.getAll("dataset"), missingProject);
 }
 
 main().catch(showError);
