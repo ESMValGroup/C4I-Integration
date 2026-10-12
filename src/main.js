@@ -35,6 +35,10 @@ const suggestExcludeValue = document.getElementById("suggest-exclude-value");
 const suggestResult = document.querySelector("#suggest-result small");
 const themeButton = document.getElementById("theme");
 const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+// Touch screens have no hover. A tap there shows the tooltip of a point until
+// the next tap, and it does not fit next to points in the middle of a phone
+// screen. So show the run that was tapped below the charts instead.
+const noHover = window.matchMedia("(hover: none)");
 // The theme chosen with the theme button, if any, is remembered in the
 // browser. Otherwise the page follows the theme of the system.
 const THEME_KEY = "theme";
@@ -509,8 +513,30 @@ function chartControls(chart, title) {
   );
 }
 
+// Show the bias and change of a tapped run below each chart
+function showTapped(row) {
+  current.tapped = row;
+  for (const { caption, variable } of embedded) {
+    if (!caption) {
+      continue;
+    }
+    caption.replaceChildren(
+      ...(row
+        ? [
+            swatch(row),
+            element("strong", { textContent: modelName(row) }),
+            runName(row) === row.dataset ? "" : ` ${runName(row)}`,
+            ` · bias ${numberFormat.format(row[variable.bias])}`,
+            ` · change ${numberFormat.format(row[variable.change])}`,
+          ]
+        : ["Tap a point to see its bias and change."]),
+    );
+  }
+}
+
 async function embedChart(spec, container) {
   const result = await vegaEmbed(container, spec, {
+    tooltip: !noHover.matches,
     theme: dark ? "dark" : undefined,
     config: {
       background: "transparent",
@@ -546,6 +572,7 @@ async function embedChart(spec, container) {
     if (!dataset || item.mark.marktype !== "symbol" || moved >= CLICK_TOLERANCE) {
       return;
     }
+    showTapped(item.datum);
     if (
       lastClick?.dataset === dataset &&
       event.timeStamp - lastClick.time < DOUBLE_CLICK_TIME
@@ -584,9 +611,15 @@ async function render() {
     return; // another project was selected in the meantime
   }
   embedded = results;
-  results.forEach((chart, i) =>
-    figures[i].prepend(chartControls(chart, shown.views[i].title)),
-  );
+  results.forEach((chart, i) => {
+    chart.variable = shown.variables[i];
+    figures[i].prepend(chartControls(chart, shown.views[i].title));
+    if (noHover.matches) {
+      chart.caption = element("figcaption", { ariaLive: "polite" });
+      figures[i].append(chart.caption);
+    }
+  });
+  showTapped(shown.tapped);
 }
 
 // Browser storage may be unavailable, e.g. in a private window
@@ -686,6 +719,8 @@ async function showProject(project, requested) {
     reasons: new Map(),
     // The runs that are highlighted, see setHighlight
     highlight: [],
+    // The run that was tapped last, see showTapped
+    tapped: undefined,
     colorField: views[0].encoding.fill.condition?.field ?? views[0].encoding.fill.field,
   };
   suggestResult.textContent = "";
