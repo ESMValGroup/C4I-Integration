@@ -101,9 +101,8 @@ climate4impact/
 
 ## Using the viewer
 
-The buttons at the top choose the project. Tap or click a point to select
-that run, and again to deselect it. Double-tap or double-click it to select
-all runs of its model. Drag a chart to pan it, and zoom with the
+The buttons at the top choose the project. Click a point to select that run,
+and again to deselect it. Double-click it to select all runs of its model. Drag a chart to pan it, and zoom with the
 buttons above it or with <kbd>Ctrl</kbd> + scroll, so plain scrolling still
 scrolls the page. Each chart is panned and zoomed on its own.
 
