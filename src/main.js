@@ -18,6 +18,7 @@ const RING_SIZE = 800;
 const HIGHLIGHTED = "indexof(highlight, datum.dataset) >= 0";
 
 const projectButtons = document.getElementById("projects");
+const domainButtons = document.getElementById("domains");
 const notesList = document.getElementById("notes");
 const charts = document.getElementById("charts");
 const errorMessage = document.getElementById("error");
@@ -63,7 +64,8 @@ const numberFormat = new Intl.NumberFormat("en", {
   signDisplay: "exceptZero",
 });
 
-// Maps each project to the recipe output directory to show it from
+// Maps each project to the recipe output directory to show it from and, for
+// projects with several domains, each domain to the diagnostic of that domain
 let recipeRuns;
 let dark = (storedTheme() ?? (systemDark.matches ? "dark" : "light")) === "dark";
 // The project that is shown: its specification, rows, models and selection
@@ -87,10 +89,21 @@ function fetchJson(url) {
   });
 }
 
-function specUrl(project) {
+// Projects are given by a directory, or by a directory and their domains
+function recipeRun(entry) {
+  return typeof entry === "string" ? { directory: entry } : entry;
+}
+
+function domains(project) {
+  return Object.keys(recipeRuns[project].domains ?? {});
+}
+
+function specUrl(project, domain) {
+  const { directory, domains } = recipeRuns[project];
+  const diagnostic = domain ? domains[domain] : "bias_and_change";
   return [
-    recipeRuns[project],
-    "work/bias_and_change/visualize",
+    directory,
+    `work/${diagnostic}/visualize`,
     `vegalite_spec_${project}.json`,
   ]
     .map((part) => part.split("/").map(encodeURIComponent).join("/"))
@@ -116,16 +129,18 @@ function fillList(list, items) {
   );
 }
 
-// The model of a run: its dataset without the project and the ensemble
-// member, e.g. MIROC6 for CMIP6_MIROC6_r1i1p1f1, or the regional model with
-// its driving model for CORDEX
+// The model of a run: its dataset without the project, the ensemble member
+// and the domain, e.g. MIROC6 for CMIP6_MIROC6_r1i1p1f1, or the regional
+// model with its driving model for CORDEX
 function modelName(row) {
   let name = row.dataset;
   if (name.startsWith(`${row.project}_`)) {
     name = name.slice(row.project.length + 1);
   }
-  if (row.member && name.endsWith(`_${row.member}`)) {
-    name = name.slice(0, -row.member.length - 1);
+  for (const suffix of [row.domain, row.member]) {
+    if (suffix && name.endsWith(`_${suffix}`)) {
+      name = name.slice(0, -suffix.length - 1);
+    }
   }
   return name || row.dataset;
 }
@@ -154,16 +169,23 @@ function missingDatasets(rows, requested) {
 // Links to this page may name projects and datasets that it has no results
 // for, e.g. misspelled names or models that do not provide all variables and
 // experiments needed to calculate the bias and projected change
-function showUnavailable(missingProject, missing) {
+function showUnavailable(missingProject, missingDomain, missing) {
   const quote = (names) => names.map((name) => `"${name}"`).join(", ");
+  const shown = current.domain
+    ? `${current.project} ${current.domain}`
+    : current.project;
   let message = "";
   if (missingProject) {
     message =
       `No results are available for project "${missingProject}", ` +
-      `showing ${current.project} instead.`;
+      `showing ${shown} instead.`;
+  } else if (missingDomain) {
+    message =
+      `No results are available for domain "${missingDomain}" in ` +
+      `${current.project}, showing ${current.domain} instead.`;
   } else if (missing.length > 0) {
     message =
-      `No results are available for ${quote(missing)} in ${current.project}. ` +
+      `No results are available for ${quote(missing)} in ${shown}. ` +
       "Either the name is misspelled, or the model does not provide all " +
       "variables and experiments needed to calculate the bias and projected " +
       "change.";
@@ -182,6 +204,9 @@ function runName(row) {
 // Name whole models rather than all of their runs, to keep the URL short
 function updateUrl() {
   const params = new URLSearchParams({ project: current.project });
+  if (current.domain) {
+    params.set("domain", current.domain);
+  }
   for (const [model, rows] of current.models) {
     const selected = rows.filter((row) => current.selected.has(row.dataset));
     if (rows.length > 1 && selected.length === rows.length) {
@@ -751,25 +776,57 @@ function buttonGroup(group, options, onClick) {
   );
 }
 
-async function showProject(project, requested, missingProject) {
+// Offer the domains of the project, if it has several
+function showDomains(project) {
+  const options = domains(project);
+  buttonGroup(
+    domainButtons,
+    options.map((domain) => ({ value: domain, label: domain })),
+    (domain) => showProject(project, [], { domain }).catch(showError),
+  );
+  domainButtons.hidden = options.length === 0;
+  domainButtons.dataset.project = project;
+}
+
+// The pressed button of a group, if it is shown
+function pressed(group) {
+  return group.hidden
+    ? undefined
+    : group.querySelector("[aria-pressed=true]")?.value;
+}
+
+async function showProject(
+  project,
+  requested,
+  { domain, missingProject, missingDomain } = {},
+) {
   pressButton(projectButtons, project);
+  if (domainButtons.dataset.project !== project) {
+    showDomains(project);
+  }
+  domain ??= domains(project)[0];
+  pressButton(domainButtons, domain);
   charts.ariaBusy = "true";
   errorMessage.hidden = true;
   unavailableMessage.hidden = true;
-  const spec = await fetchJson(specUrl(project));
-  if (projectButtons.querySelector("[aria-pressed=true]").value !== project) {
-    return; // another project was selected in the meantime
+  const spec = await fetchJson(specUrl(project, domain));
+  if (
+    pressed(projectButtons) !== project ||
+    pressed(domainButtons) !== domain
+  ) {
+    return; // another project or domain was selected in the meantime
   }
   fillList(notesList, spec.usermeta?.notes ?? []);
-  const recipeRun = recipeRuns[project];
-  recipeOutput.href = `${encodeURIComponent(recipeRun)}/index.html`;
-  recipeOutput.title = `Output of recipe run ${recipeRun}`;
+  const { directory } = recipeRuns[project];
+  recipeOutput.href = `${encodeURIComponent(directory)}/index.html`;
+  recipeOutput.title = `Output of recipe run ${directory}`;
   recipeOutput.hidden = false;
 
   const rows = spec.data.values;
   const views = spec.hconcat ?? spec.vconcat;
   current = {
     project,
+    domain,
     spec,
     rows,
     models: Map.groupBy(rows, modelName),
@@ -791,6 +848,7 @@ async function showProject(project, requested, missingProject) {
   // The datasets of another project are not looked for in this one
   showUnavailable(
     missingProject,
+    missingDomain,
     missingProject ? [] : missingDatasets(rows, requested),
   );
   suggestResult.textContent = "";
@@ -898,7 +956,11 @@ function setUpControls(projects) {
 
 async function main() {
   // The manifest is deployed next to this page, see README.md
-  recipeRuns = await fetchJson("projects.json");
+  recipeRuns = Object.fromEntries(
+    Object.entries(await fetchJson("projects.json")).map(
+      ([project, entry]) => [project, recipeRun(entry)],
+    ),
+  );
   const projects = Object.keys(recipeRuns).sort();
 
   const params = new URLSearchParams(window.location.search);
@@ -915,7 +977,20 @@ async function main() {
     requestedProject && requestedProject !== initialProject
       ? requestedProject
       : undefined;
-  await showProject(initialProject, params.getAll("dataset"), missingProject);
+  const requestedDomain = params.get("domain");
+  const available = domains(initialProject);
+  const domain = available.includes(requestedDomain)
+    ? requestedDomain
+    : available[0];
+  const missingDomain =
+    !missingProject && requestedDomain && requestedDomain !== domain
+      ? requestedDomain
+      : undefined;
+  await showProject(initialProject, params.getAll("dataset"), {
+    domain,
+    missingProject,
+    missingDomain,
+  });
 }
 
 main().catch(showError);

@@ -26,7 +26,8 @@ html {
   padding: 0;
 }
 
-#projects {
+#projects,
+#domains {
   margin-bottom: var(--pico-spacing);
 }
 

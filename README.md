@@ -27,15 +27,27 @@ specification for each project to
 directory, which embeds the data and the notes shown above the charts.
 
 The manifest `projects.json`, next to `index.html`, lists the projects offered
-in the project dropdown and the recipe output directory to show each one from:
+by the project buttons and the recipe output directory to show each one from:
 
 ```json
 {
   "CMIP5": "recipe_impact_20230302_220334",
   "CMIP6": "recipe_impact_cmip6_20261009_154152",
-  "CORDEX-CMIP6": "recipe_impact_cordex-cmip6_20261009_150557"
+  "CORDEX-CMIP6": {
+    "directory": "recipe_impact_cordex-cmip6_20261012_152441",
+    "domains": {
+      "EUR-12": "bias_and_change",
+      "CAM-25": "bias_and_change_CAM-25"
+    }
+  }
 }
 ```
+
+The results of a project with several domains, such as CORDEX, are written by
+a separate diagnostic of the recipe for each domain. For such a project, the
+manifest maps each domain to its diagnostic, so the specification is read from
+`work/<diagnostic>/visualize/vegalite_spec_<PROJECT>.json`. A row of buttons
+below the project buttons then chooses the domain, the first one by default.
 
 The "View recipe output" button links to `<directory>/index.html`. If a
 directory contains several versions of the same project, e.g. from repeated
@@ -94,22 +106,25 @@ climate4impact/
 ├── recipe_impact_cmip6_20261009_154152/
 │   ├── index.html
 │   └── work/bias_and_change/visualize/vegalite_spec_CMIP6.json
-└── recipe_impact_cordex-cmip6_20261009_150557/
+└── recipe_impact_cordex-cmip6_20261012_152441/
     ├── index.html
-    └── work/bias_and_change/visualize/vegalite_spec_CORDEX-CMIP6.json
+    └── work/
+        ├── bias_and_change/visualize/vegalite_spec_CORDEX-CMIP6.json
+        └── bias_and_change_CAM-25/visualize/vegalite_spec_CORDEX-CMIP6.json
 ```
 
 ## Using the viewer
 
-The buttons at the top choose the project. Click a point to select that run,
-and again to deselect it. Double-click it to select all runs of its model. Drag a chart to pan it, and zoom with the
-buttons above it or with <kbd>Ctrl</kbd> + scroll, so plain scrolling still
-scrolls the page. Scrolling over a chart without <kbd>Ctrl</kbd> briefly shows
-how to zoom. Each chart is panned and zoomed on its own.
+The buttons at the top choose the project and, for CORDEX, the domain. Click a
+point to select that run, and again to deselect it. Double-click it to select
+all runs of its model. Drag a chart to pan it, and zoom with the buttons above
+it or with <kbd>Ctrl</kbd> + scroll, so plain scrolling still scrolls the page.
+Scrolling over a chart without <kbd>Ctrl</kbd> briefly shows how to zoom. Each
+chart is panned and zoomed on its own.
 
-A model is the dataset without the project and the ensemble member, e.g.
-`MIROC6` for `CMIP6_MIROC6_r1i1p1f1`. For CORDEX, this is the regional model
-together with its driving model, e.g. `ICON-CLM-202407-1-1_v1-r1_MIROC6`.
+A model is the dataset without the project, the ensemble member and the domain,
+e.g. `MIROC6` for `CMIP6_MIROC6_r1i1p1f1`. For CORDEX, this is the regional
+model together with its driving model, e.g. `ICON-CLM-202407-1-1_v1-r1_MIROC6`.
 
 "Suggest models", which opens from "Not sure which models to use?" above the
 charts, selects a few models that sample the spread of the projected change,
@@ -150,6 +165,9 @@ right corner switches the theme, and the browser remembers that choice.
 ## URL parameters
 
 - `project`: the project to show, e.g. `?project=CORDEX-CMIP6`. Defaults to CMIP6.
+- `domain`: the domain to show, for projects with several domains, e.g.
+  `?project=CORDEX-CMIP6&domain=CAM-25`. Defaults to the first domain of the
+  project in `projects.json`.
 - `dataset`: datasets to select. Give it multiple times to select several.
   The value can be a full identifier (e.g. `CMIP6_MIROC6_r1i1p1f1`), a model
   (e.g. `MIROC6`), which selects all runs of that model, or the `model` field
