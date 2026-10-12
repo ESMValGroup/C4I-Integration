@@ -1,7 +1,147 @@
-/* Let the side-by-side charts scroll on narrow screens */
-#vis {
-  overflow-x: auto;
+/* Keep the width, and so the charts, the same when a scrollbar appears */
+html {
+  scrollbar-gutter: stable;
+}
+
+#projects {
   margin-bottom: var(--pico-spacing);
+}
+
+/* Side by side when there is room for both charts, otherwise stacked */
+#charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: var(--pico-spacing);
+  margin-bottom: var(--pico-spacing);
+}
+
+.chart {
+  margin: 0;
+}
+
+/* Vega-Embed sizes its container to the chart, which must fill the column */
+.chart .chart-view {
+  display: block;
+  width: 100%;
+}
+
+/* Dragging a chart pans it rather than scrolling the page */
+.chart-view .chart-wrapper {
+  touch-action: none;
+}
+
+.chart-controls {
+  width: auto;
+  margin-bottom: calc(var(--pico-spacing) / 2);
+}
+
+.chart-controls button {
+  padding: 0.25rem 0.9rem;
+}
+
+/* Scrolling to zoom needs a mouse or a touchpad */
+@media not (pointer: fine) {
+  .mouse-only {
+    display: none;
+  }
+}
+
+#suggest [role="group"] {
+  width: auto;
+  margin-bottom: calc(var(--pico-spacing) / 4);
+}
+
+#suggest-method-help {
+  display: block;
+}
+
+#suggest-result {
+  margin: var(--pico-spacing) 0 0;
+}
+
+.reason {
+  display: block;
+  font-weight: normal;
+  color: var(--pico-muted-color);
+}
+
+#error {
+  color: var(--pico-del-color);
+}
+
+.section-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--pico-spacing) / 2);
+  margin-bottom: var(--pico-spacing);
+}
+
+.section-header h2 {
+  margin-bottom: 0;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--pico-spacing) / 2);
+}
+
+/* Let wide tables scroll on narrow screens, rather than the page */
+.table-scroll {
+  position: relative;
+  overflow-x: auto;
+  container-type: inline-size;
+}
+
+#selection button {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.875em;
+}
+
+#selection td,
+#selection th {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+#selection td {
+  text-align: right;
+}
+
+/* Keep the model and its buttons in view when the table scrolls sideways */
+.model-header {
+  position: sticky;
+  left: var(--pico-spacing);
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--pico-spacing) / 2) var(--pico-spacing);
+  max-width: calc(100cqi - 2 * var(--pico-spacing));
+  padding-top: var(--pico-spacing);
+}
+
+@media (max-width: 576px) {
+  #suggest #suggest-method {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #selection td,
+  #selection th {
+    padding: calc(var(--pico-spacing) / 2) calc(var(--pico-spacing) / 3);
+    font-size: 0.875em;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* Pico's <details> styling adds a chevron to the Vega export menu */

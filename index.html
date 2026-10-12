@@ -23,25 +23,86 @@
         more datasets that adequately sample the spread of the ensemble.
       </p>
 
-      <label for="project">Project</label>
-      <select id="project"></select>
+      <div id="projects" role="group" aria-label="Project"></div>
       <ul id="notes"></ul>
 
-      <div id="vis"></div>
-      <p>
+      <!-- Closed at first, so it does not distract from the charts -->
+      <details id="suggest">
+        <summary role="button" class="secondary outline">
+          Not sure which models to use? Suggest models
+        </summary>
+        <article>
+          <p>
+            <small>
+              Selects a few models that sample the spread of the projected
+              change, one run of each, after leaving out the most biased
+              models. Check the suggestion in the charts and adjust it to your
+              study.
+            </small>
+          </p>
+          <form id="suggest-form">
+            <fieldset>
+              <legend>Method</legend>
+              <div id="suggest-method" role="group"></div>
+              <small id="suggest-method-help"></small>
+            </fieldset>
+            <label for="suggest-count">
+              Number of models:
+              <output id="suggest-count-value" for="suggest-count"></output>
+            </label>
+            <input
+              type="range"
+              id="suggest-count"
+              min="1"
+              max="8"
+              step="1"
+              value="3"
+            />
+            <label for="suggest-exclude">
+              Leave out the most biased models:
+              <output id="suggest-exclude-value" for="suggest-exclude"></output>
+            </label>
+            <input
+              type="range"
+              id="suggest-exclude"
+              min="0"
+              max="75"
+              step="5"
+              value="25"
+            />
+            <button type="submit">Select suggested models</button>
+            <p id="suggest-result" aria-live="polite"><small></small></p>
+          </form>
+        </article>
+      </details>
+
+      <p id="chart-help">
         <small>
-          Click a point to select a dataset, hold <kbd>Shift</kbd> to select
-          multiple, or hold <kbd>Alt</kbd> and drag to highlight a range of
-          points in both graphs. Press <kbd>Esc</kbd> or double-click to clear
-          the selection. Hold <kbd>Ctrl</kbd> and drag to pan, or scroll to
-          zoom.
+          Tap or click a point to select a run, and again to deselect it.
+          Double-tap or double-click it to select all runs of its model. Drag
+          a chart to pan it, and zoom with its buttons<span class="mouse-only">
+            or with <kbd>Ctrl</kbd> + scroll</span>.
         </small>
       </p>
+      <div id="charts" aria-busy="true"></div>
+      <p id="error" role="alert" hidden></p>
 
       <section>
-        <h2>Selected datasets</h2>
-        <ul id="selection"></ul>
-        <p id="no-selection"><small>No datasets selected.</small></p>
+        <div class="section-header">
+          <h2>Selected runs</h2>
+          <div class="actions">
+            <button type="button" id="copy-link" class="secondary outline">
+              Copy link
+            </button>
+            <button type="button" id="clear" class="secondary outline">
+              Clear
+            </button>
+          </div>
+        </div>
+        <div id="selection"></div>
+        <p id="no-selection">
+          <small>No runs selected. Tap or click points in the charts.</small>
+        </p>
       </section>
 
       <a id="recipe-output" role="button" class="secondary outline" hidden>

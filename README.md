@@ -99,11 +99,58 @@ climate4impact/
     └── work/bias_and_change/visualize/vegalite_spec_CORDEX-CMIP6.json
 ```
 
+## Using the viewer
+
+The buttons at the top choose the project. Tap or click a point to select
+that run, and again to deselect it. Double-tap or double-click it to select
+all runs of its model. Drag a chart to pan it, and zoom with the
+buttons above it or with <kbd>Ctrl</kbd> + scroll, so plain scrolling still
+scrolls the page. Each chart is panned and zoomed on its own.
+
+A model is the dataset without the project and the ensemble member, e.g.
+`MIROC6` for `CMIP6_MIROC6_r1i1p1f1`. For CORDEX, this is the regional model
+together with its driving model, e.g. `ICON-CLM-202407-1-1_v1-r1_MIROC6`.
+
+"Suggest models", which opens from "Not sure which models to use?" above the
+charts, selects a few models that sample the spread of the projected change,
+for users who do not know yet which models suit their study. It first
+leaves out the most biased models (25% by default), measured by the absolute
+bias of each variable relative to its average over the models. From the rest
+it picks the chosen number of models (1 to 8), one run of each, the one
+closest to the mean of the runs of that model, with one of these methods:
+
+- **Corners**: the models closest to the 10th and 90th percentiles of the
+  projected change of both variables (e.g. little warming and drier, or much
+  warming and wetter) and to the median, as in
+  [Lutz et al. (2016)](https://doi.org/10.1002/joc.4608). With 1 model,
+  the median. With 2 or 3
+  models, the two corners that differ most, and the median. With more than 5,
+  completed with the most different models, as below.
+- **Temperature range** and **Precipitation range**: the models at evenly
+  spaced percentiles, from the 10th to the 90th, of the projected change of
+  that variable.
+- **Most different**: the model closest to the median, then each time the
+  model whose projected change differs most from those chosen so far.
+
+The table of selected runs shows the bias and change of each selected run.
+"Select all runs" next to a model selects the rest of its ensemble.
+<kbd>Esc</kbd> clears the selection.
+
+On narrow screens the charts are shown above each other.
+
 ## URL parameters
 
 - `project`: the project to show, e.g. `?project=CORDEX-CMIP6`. Defaults to CMIP6.
 - `dataset`: datasets to select. Give it multiple times to select several.
-  The value can be a full identifier (e.g. `CMIP6_MIROC6_r1i1p1f1`) or a model
-  name (e.g. `MIROC6`), which selects all runs of that model.
+  The value can be a full identifier (e.g. `CMIP6_MIROC6_r1i1p1f1`), a model
+  (e.g. `MIROC6`), which selects all runs of that model, or the `model` field
+  of the data (e.g. `ICON-CLM-202407-1-1`), which selects all runs of that
+  regional model, whatever its driving model.
 
-The URL is updated when the selection changes, so it can be shared.
+The URL is updated when the selection changes, so it can be shared with
+"Copy link". When all runs of a model are selected, the URL names the model
+rather than each run.
+
+The viewer shows each view of the Vega-Lite specification as a separate chart
+and replaces its interactions (`params`) with its own, so it works with
+specifications written by any version of the diagnostic.
