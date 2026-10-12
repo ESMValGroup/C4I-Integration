@@ -74,11 +74,31 @@ html {
   color: var(--pico-color);
 }
 
-/* Scrolling to zoom needs a mouse or a touchpad */
-@media not (pointer: fine) {
-  .mouse-only {
-    display: none;
-  }
+/* How to zoom, shown over a chart when scrolling over it */
+.chart {
+  position: relative;
+}
+
+.zoom-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.zoom-hint.visible {
+  opacity: 1;
+}
+
+.zoom-hint span {
+  padding: 0.5rem 1rem;
+  border-radius: var(--pico-border-radius);
+  background-color: color-mix(in srgb, var(--pico-contrast-background) 85%, transparent);
+  color: var(--pico-contrast-inverse);
 }
 
 #suggest [role="group"] {

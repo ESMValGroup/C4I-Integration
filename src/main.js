@@ -53,6 +53,10 @@ const SUN_ICON = icon(
     'M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
 );
 const MOON_ICON = icon('<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>');
+// Zooming with the wheel needs the Ctrl key, or the Command key on a Mac
+const ZOOM_KEY = /Mac|iPhone|iPad/.test(navigator.platform) ? "⌘" : "Ctrl";
+// How long the hint on how to zoom is shown, in ms
+const ZOOM_HINT_TIME = 1500;
 const numberFormat = new Intl.NumberFormat("en", {
   maximumSignificantDigits: 3,
   signDisplay: "exceptZero",
@@ -589,13 +593,41 @@ async function embedChart(spec, container) {
   return { result, view, spec };
 }
 
+// Scrolling over a chart scrolls the page, so show how to zoom instead.
+// Pinching on a touchpad also sets the Ctrl key, so it zooms without a hint.
+function zoomHint(container) {
+  const hint = element("div", { className: "zoom-hint", ariaHidden: "true" }, [
+    element("span", { textContent: `Use ${ZOOM_KEY} + scroll to zoom` }),
+  ]);
+  let timeout;
+  container.addEventListener(
+    "wheel",
+    (event) => {
+      if (event.ctrlKey || event.metaKey) {
+        return;
+      }
+      hint.classList.add("visible");
+      clearTimeout(timeout);
+      timeout = setTimeout(
+        () => hint.classList.remove("visible"),
+        ZOOM_HINT_TIME,
+      );
+    },
+    { passive: true },
+  );
+  return hint;
+}
+
 async function render() {
   const shown = current;
   const containers = shown.views.map(() =>
     element("div", { className: "chart-view" }),
   );
   const figures = containers.map((container) =>
-    element("figure", { className: "chart" }, [container]),
+    element("figure", { className: "chart" }, [
+      container,
+      zoomHint(container),
+    ]),
   );
   // The charts take the width of their container, so attach it first
   charts.replaceChildren(...figures);

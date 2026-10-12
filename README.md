@@ -104,7 +104,8 @@ climate4impact/
 The buttons at the top choose the project. Click a point to select that run,
 and again to deselect it. Double-click it to select all runs of its model. Drag a chart to pan it, and zoom with the
 buttons above it or with <kbd>Ctrl</kbd> + scroll, so plain scrolling still
-scrolls the page. Each chart is panned and zoomed on its own.
+scrolls the page. Scrolling over a chart without <kbd>Ctrl</kbd> briefly shows
+how to zoom. Each chart is panned and zoomed on its own.
 
 A model is the dataset without the project and the ensemble member, e.g.
 `MIROC6` for `CMIP6_MIROC6_r1i1p1f1`. For CORDEX, this is the regional model
