@@ -34,20 +34,24 @@ by the project buttons and the recipe output directory to show each one from:
   "CMIP5": "recipe_impact_20230302_220334",
   "CMIP6": "recipe_impact_cmip6_20261009_154152",
   "CORDEX-CMIP6": {
-    "directory": "recipe_impact_cordex-cmip6_20261012_152441",
-    "domains": {
-      "EUR-12": "bias_and_change",
-      "CAM-25": "bias_and_change_CAM-25"
-    }
+    "directory": "recipe_impact_cordex-cmip6_20261016_101508",
+    "domains": ["EUR", "CAM"]
   }
 }
 ```
 
 The results of a project with several domains, such as CORDEX, are written by
-a separate diagnostic of the recipe for each domain. For such a project, the
-manifest maps each domain to its diagnostic, so the specification is read from
-`work/<diagnostic>/visualize/vegalite_spec_<PROJECT>.json`. A row of buttons
-below the project buttons then chooses the domain, the first one by default.
+a separate diagnostic of the recipe for each domain, named
+`bias_and_change_<DOMAIN>`. For such a project, the manifest lists the domains,
+and the specification of each domain is read from
+`work/bias_and_change_<DOMAIN>/visualize/vegalite_spec_<PROJECT>.json`. A row
+of buttons below the project buttons then chooses the domain, the first one by
+default.
+Domains are named by their CORDEX code without the resolution, e.g. `EUR` for
+Europe, so the diagnostic of a domain can contain models on several grids,
+e.g. `EUR-12` and `EUR-25`. The buttons show the name of the region, e.g.
+Europe. If the models of a domain are on several grids, the table of selected
+runs shows the grid of each run.
 
 The "View recipe output" button links to `<directory>/index.html`. If a
 directory contains several versions of the same project, e.g. from repeated
@@ -106,11 +110,11 @@ climate4impact/
 ├── recipe_impact_cmip6_20261009_154152/
 │   ├── index.html
 │   └── work/bias_and_change/visualize/vegalite_spec_CMIP6.json
-└── recipe_impact_cordex-cmip6_20261012_152441/
+└── recipe_impact_cordex-cmip6_20261016_101508/
     ├── index.html
     └── work/
-        ├── bias_and_change/visualize/vegalite_spec_CORDEX-CMIP6.json
-        └── bias_and_change_CAM-25/visualize/vegalite_spec_CORDEX-CMIP6.json
+        ├── bias_and_change_EUR/visualize/vegalite_spec_CORDEX-CMIP6.json
+        └── bias_and_change_CAM/visualize/vegalite_spec_CORDEX-CMIP6.json
 ```
 
 ## Using the viewer
@@ -166,8 +170,9 @@ right corner switches the theme, and the browser remembers that choice.
 
 - `project`: the project to show, e.g. `?project=CORDEX-CMIP6`. Defaults to CMIP6.
 - `domain`: the domain to show, for projects with several domains, e.g.
-  `?project=CORDEX-CMIP6&domain=CAM-25`. Defaults to the first domain of the
-  project in `projects.json`.
+  `?project=CORDEX-CMIP6&domain=CAM`. Defaults to the first domain of the
+  project in `projects.json`. A domain with its resolution, e.g. `CAM-25`, is
+  also accepted.
 - `dataset`: datasets to select. Give it multiple times to select several.
   The value can be a full identifier (e.g. `CMIP6_MIROC6_r1i1p1f1`), a model
   (e.g. `MIROC6`), which selects all runs of that model, or the `model` field

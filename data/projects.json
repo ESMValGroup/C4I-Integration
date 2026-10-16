@@ -2,10 +2,7 @@
   "CMIP5": "recipe_impact_20230302_220334",
   "CMIP6": "recipe_impact_cmip6_20261009_154152",
   "CORDEX-CMIP6": {
-    "directory": "recipe_impact_cordex-cmip6_20261012_152441",
-    "domains": {
-      "EUR-12": "bias_and_change",
-      "CAM-25": "bias_and_change_CAM-25"
-    }
+    "directory": "recipe_impact_cordex-cmip6_20261016_101508",
+    "domains": ["EUR", "CAM"]
   }
 }

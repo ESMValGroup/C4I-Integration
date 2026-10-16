@@ -16,6 +16,24 @@ const DOUBLE_CLICK_TIME = 400;
 const RING_SIZE = 800;
 // Whether a run is highlighted, as a Vega expression
 const HIGHLIGHTED = "indexof(highlight, datum.dataset) >= 0";
+// Names of the CORDEX domains. Their codes leave out the resolution, e.g. EUR
+// for EUR-12 and EUR-25, so models on different grids are shown together.
+const DOMAIN_NAMES = {
+  AFR: "Africa",
+  ANT: "Antarctica",
+  ARC: "Arctic",
+  AUS: "Australasia",
+  CAM: "Central America",
+  CAS: "Central Asia",
+  EAS: "East Asia",
+  EUR: "Europe",
+  MED: "Mediterranean",
+  MNA: "Middle East and North Africa",
+  NAM: "North America",
+  SAM: "South America",
+  SEA: "Southeast Asia",
+  WAS: "South Asia",
+};
 
 const projectButtons = document.getElementById("projects");
 const domainButtons = document.getElementById("domains");
@@ -65,7 +83,7 @@ const numberFormat = new Intl.NumberFormat("en", {
 });
 
 // Maps each project to the recipe output directory to show it from and, for
-// projects with several domains, each domain to the diagnostic of that domain
+// projects with several domains, the domains (e.g. EUR)
 let recipeRuns;
 let dark = (storedTheme() ?? (systemDark.matches ? "dark" : "light")) === "dark";
 // The project that is shown: its specification, rows, models and selection
@@ -95,12 +113,23 @@ function recipeRun(entry) {
 }
 
 function domains(project) {
-  return Object.keys(recipeRuns[project].domains ?? {});
+  return recipeRuns[project].domains ?? [];
+}
+
+// The name of a domain, e.g. Europe for EUR, or its code if unknown
+function domainName(domain) {
+  return DOMAIN_NAMES[domain] ?? domain;
+}
+
+// The domain without its resolution, e.g. EUR for EUR-12
+function domainCode(domain) {
+  return domain.split("-")[0];
 }
 
 function specUrl(project, domain) {
-  const { directory, domains } = recipeRuns[project];
-  const diagnostic = domain ? domains[domain] : "bias_and_change";
+  const { directory } = recipeRuns[project];
+  // Each domain has its own diagnostic, e.g. bias_and_change_EUR
+  const diagnostic = domain ? `bias_and_change_${domain}` : "bias_and_change";
   return [
     directory,
     `work/${diagnostic}/visualize`,
@@ -172,7 +201,7 @@ function missingDatasets(rows, requested) {
 function showUnavailable(missingProject, missingDomain, missing) {
   const quote = (names) => names.map((name) => `"${name}"`).join(", ");
   const shown = current.domain
-    ? `${current.project} ${current.domain}`
+    ? `${current.project} ${domainName(current.domain)}`
     : current.project;
   let message = "";
   if (missingProject) {
@@ -182,7 +211,7 @@ function showUnavailable(missingProject, missingDomain, missing) {
   } else if (missingDomain) {
     message =
       `No results are available for domain "${missingDomain}" in ` +
-      `${current.project}, showing ${current.domain} instead.`;
+      `${current.project}, showing ${domainName(current.domain)} instead.`;
   } else if (missing.length > 0) {
     message =
       `No results are available for ${quote(missing)} in ${shown}. ` +
@@ -194,11 +223,13 @@ function showUnavailable(missingProject, missingDomain, missing) {
   unavailableMessage.hidden = !message;
 }
 
-// A short name for a run of a model: its ensemble member, e.g. r1i1p1f1
+// A short name for a run of a model: its ensemble member, e.g. r1i1p1f1, and
+// its grid if the models are on several grids, e.g. r1i1p1f1 EUR-25
 function runName(row) {
-  return row.member && modelName(row) !== row.dataset
-    ? row.member
-    : row.dataset;
+  if (!row.member || modelName(row) === row.dataset) {
+    return row.dataset;
+  }
+  return current.severalGrids ? `${row.member} ${row.domain}` : row.member;
 }
 
 // Name whole models rather than all of their runs, to keep the URL short
@@ -781,7 +812,7 @@ function showDomains(project) {
   const options = domains(project);
   buttonGroup(
     domainButtons,
-    options.map((domain) => ({ value: domain, label: domain })),
+    options.map((domain) => ({ value: domain, label: domainName(domain) })),
     (domain) => showProject(project, [], { domain }).catch(showError),
   );
   domainButtons.hidden = options.length === 0;
@@ -830,6 +861,7 @@ async function showProject(
     spec,
     rows,
     models: Map.groupBy(rows, modelName),
+    severalGrids: new Set(rows.map((row) => row.domain)).size > 1,
     views,
     variables: views.map((view) => ({
       title: view.title,
@@ -979,11 +1011,12 @@ async function main() {
       : undefined;
   const requestedDomain = params.get("domain");
   const available = domains(initialProject);
-  const domain = available.includes(requestedDomain)
-    ? requestedDomain
+  // Older links name the grid, e.g. EUR-12
+  const domain = available.includes(domainCode(requestedDomain ?? ""))
+    ? domainCode(requestedDomain)
     : available[0];
   const missingDomain =
-    !missingProject && requestedDomain && requestedDomain !== domain
+    !missingProject && requestedDomain && domainCode(requestedDomain) !== domain
       ? requestedDomain
       : undefined;
   await showProject(initialProject, params.getAll("dataset"), {
