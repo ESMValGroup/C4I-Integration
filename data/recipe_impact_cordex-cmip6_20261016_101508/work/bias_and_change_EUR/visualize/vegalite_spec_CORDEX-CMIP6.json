@@ -1,0 +1,264 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "CORDEX-CMIP6 data processed with ESMValTool.",
+  "usermeta": {
+    "project": "CORDEX-CMIP6",
+    "notes": [
+      "Bias is calculated with respect to the ERA5 reanalysis dataset over the period 1986-2015, on the 0.25 degree ERA5 grid.",
+      "Future change is calculated for 2035-2065 as compared to 1986-2015.",
+      "Area is set to the European CORDEX domain (EUR).",
+      "All data are taken from the SSP5-8.5 scenario."
+    ],
+    "recipe_output": "recipe_impact_cordex-cmip6_20261016_101508"
+  },
+  "data": {
+    "values": [
+      {
+        "dataset": "CNRM-ALADIN64E1_v1-r1_NorESM2-MM_r1i1p1f1_EUR-12",
+        "tas_bias": 2.7238759995,
+        "pr_bias": 1.7937397957,
+        "tas_change": 1.4149940014,
+        "pr_change": -0.0684322715,
+        "model": "CNRM-ALADIN64E1",
+        "version_realization": "v1-r1",
+        "driver": "NorESM2-MM",
+        "member": "r1i1p1f1",
+        "domain": "EUR-12",
+        "project": "CORDEX-CMIP6"
+      },
+      {
+        "dataset": "ICON-CLM-202407-1-1_v1-r1_CNRM-ESM2-1_r1i1p1f2_EUR-12",
+        "tas_bias": 2.7655470371,
+        "pr_bias": 2.1586277485,
+        "tas_change": 1.2940975428,
+        "pr_change": -0.0777892321,
+        "model": "ICON-CLM-202407-1-1",
+        "version_realization": "v1-r1",
+        "driver": "CNRM-ESM2-1",
+        "member": "r1i1p1f2",
+        "domain": "EUR-12",
+        "project": "CORDEX-CMIP6"
+      },
+      {
+        "dataset": "ICON-CLM-202407-1-1_v1-r1_EC-Earth3-Veg_r1i1p1f1_EUR-12",
+        "tas_bias": 2.5739274025,
+        "pr_bias": 1.5769660473,
+        "tas_change": 2.1542346478,
+        "pr_change": -0.0083087068,
+        "model": "ICON-CLM-202407-1-1",
+        "version_realization": "v1-r1",
+        "driver": "EC-Earth3-Veg",
+        "member": "r1i1p1f1",
+        "domain": "EUR-12",
+        "project": "CORDEX-CMIP6"
+      },
+      {
+        "dataset": "ICON-CLM-202407-1-1_v1-r1_MIROC6_r1i1p1f1_EUR-12",
+        "tas_bias": 2.9074215889,
+        "pr_bias": 1.7962939739,
+        "tas_change": 1.7212034464,
+        "pr_change": -0.0050330069,
+        "model": "ICON-CLM-202407-1-1",
+        "version_realization": "v1-r1",
+        "driver": "MIROC6",
+        "member": "r1i1p1f1",
+        "domain": "EUR-12",
+        "project": "CORDEX-CMIP6"
+      },
+      {
+        "dataset": "ICON-CLM-202407-1-1_v1-r1_MPI-ESM1-2-HR_r1i1p1f1_EUR-12",
+        "tas_bias": 2.7592258453,
+        "pr_bias": 1.5873918533,
+        "tas_change": 1.4037793875,
+        "pr_change": -0.0193339381,
+        "model": "ICON-CLM-202407-1-1",
+        "version_realization": "v1-r1",
+        "driver": "MPI-ESM1-2-HR",
+        "member": "r1i1p1f1",
+        "domain": "EUR-12",
+        "project": "CORDEX-CMIP6"
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "continuousWidth": 400,
+      "continuousHeight": 300
+    },
+    "legend": {
+      "disable": true
+    }
+  },
+  "params": [
+    {
+      "name": "query",
+      "select": {
+        "type": "point",
+        "fields": [
+          "dataset"
+        ],
+        "clear": "dblclick"
+      }
+    }
+  ],
+  "hconcat": [
+    {
+      "title": "Temperature (K)",
+      "mark": {
+        "type": "circle",
+        "size": 150
+      },
+      "encoding": {
+        "x": {
+          "field": "tas_bias",
+          "type": "quantitative",
+          "title": "Bias with respect to ERA5 (1986-2015)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "y": {
+          "field": "tas_change",
+          "type": "quantitative",
+          "title": "Projected change (2050 versus 2000)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "fill": {
+          "field": "model",
+          "type": "nominal"
+        },
+        "stroke": {
+          "condition": {
+            "param": "query",
+            "value": "black",
+            "empty": false
+          },
+          "value": "transparent"
+        },
+        "tooltip": [
+          {
+            "field": "dataset",
+            "type": "nominal"
+          },
+          {
+            "field": "model",
+            "type": "nominal"
+          },
+          {
+            "field": "version_realization",
+            "type": "nominal"
+          },
+          {
+            "field": "driver",
+            "type": "nominal"
+          },
+          {
+            "field": "member",
+            "type": "nominal"
+          },
+          {
+            "field": "domain",
+            "type": "nominal"
+          },
+          {
+            "field": "project",
+            "type": "nominal"
+          },
+          {
+            "field": "tas_bias",
+            "type": "quantitative",
+            "title": "bias",
+            "format": ".3g"
+          },
+          {
+            "field": "tas_change",
+            "type": "quantitative",
+            "title": "change",
+            "format": ".3g"
+          }
+        ]
+      }
+    },
+    {
+      "title": "Precipitation (mm/day)",
+      "mark": {
+        "type": "circle",
+        "size": 150
+      },
+      "encoding": {
+        "x": {
+          "field": "pr_bias",
+          "type": "quantitative",
+          "title": "Bias with respect to ERA5 (1986-2015)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "y": {
+          "field": "pr_change",
+          "type": "quantitative",
+          "title": "Projected change (2050 versus 2000)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "fill": {
+          "field": "model",
+          "type": "nominal"
+        },
+        "stroke": {
+          "condition": {
+            "param": "query",
+            "value": "black",
+            "empty": false
+          },
+          "value": "transparent"
+        },
+        "tooltip": [
+          {
+            "field": "dataset",
+            "type": "nominal"
+          },
+          {
+            "field": "model",
+            "type": "nominal"
+          },
+          {
+            "field": "version_realization",
+            "type": "nominal"
+          },
+          {
+            "field": "driver",
+            "type": "nominal"
+          },
+          {
+            "field": "member",
+            "type": "nominal"
+          },
+          {
+            "field": "domain",
+            "type": "nominal"
+          },
+          {
+            "field": "project",
+            "type": "nominal"
+          },
+          {
+            "field": "pr_bias",
+            "type": "quantitative",
+            "title": "bias",
+            "format": ".3g"
+          },
+          {
+            "field": "pr_change",
+            "type": "quantitative",
+            "title": "change",
+            "format": ".3g"
+          }
+        ]
+      }
+    }
+  ]
+}

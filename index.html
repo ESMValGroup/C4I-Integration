@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Compare the bias and projected change of climate models, calculated with ESMValTool."
+    />
+    <title>Climate impact result viewer</title>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <main class="container">
+      <header class="page-header">
+        <hgroup>
+          <h1>Climate impact result viewer</h1>
+          <p>Bias and projected change of climate models, calculated with ESMValTool</p>
+        </hgroup>
+        <button type="button" id="theme" class="secondary outline"></button>
+      </header>
+      <p>
+        This application shows results from climate models, calculated with
+        <a href="https://esmvaltool.org">ESMValTool</a>. It is intended to
+        provide some guidance for climate impact researchers, to select one or
+        more datasets that adequately sample the spread of the ensemble.
+      </p>
+
+      <div id="projects" role="group" aria-label="Project"></div>
+      <div id="domains" role="group" aria-label="Domain" hidden></div>
+      <ul id="notes"></ul>
+
+      <!-- Closed at first, so it does not distract from the charts -->
+      <details id="suggest">
+        <summary role="button" class="secondary outline">
+          Not sure which models to use? Suggest models
+        </summary>
+        <article>
+          <p>
+            <small>
+              Selects a few models that sample the spread of the projected
+              change, one run of each, after leaving out the most biased
+              models. Check the suggestion in the charts and adjust it to your
+              study.
+            </small>
+          </p>
+          <form id="suggest-form">
+            <fieldset>
+              <legend>Method</legend>
+              <div id="suggest-method" role="group"></div>
+              <small id="suggest-method-help"></small>
+            </fieldset>
+            <label for="suggest-count">
+              Number of models:
+              <output id="suggest-count-value" for="suggest-count"></output>
+            </label>
+            <input
+              type="range"
+              id="suggest-count"
+              min="1"
+              max="8"
+              step="1"
+              value="3"
+            />
+            <label for="suggest-exclude">
+              Leave out the most biased models:
+              <output id="suggest-exclude-value" for="suggest-exclude"></output>
+            </label>
+            <input
+              type="range"
+              id="suggest-exclude"
+              min="0"
+              max="75"
+              step="5"
+              value="25"
+            />
+            <button type="submit">Select suggested models</button>
+            <p id="suggest-result" aria-live="polite"><small></small></p>
+          </form>
+        </article>
+      </details>
+
+      <p id="unavailable" role="status" hidden></p>
+      <p id="chart-help">
+        <small>
+          Click a point to select a run, and again to deselect it.
+          Double-click it to select all runs of its model.
+        </small>
+      </p>
+      <div id="charts" aria-busy="true"></div>
+      <p id="error" role="alert" hidden></p>
+
+      <section>
+        <div class="section-header">
+          <h2>Selected runs</h2>
+          <div class="actions">
+            <button type="button" id="copy-link" class="secondary outline">
+              Copy link
+            </button>
+            <button type="button" id="clear" class="secondary outline">
+              Clear
+            </button>
+          </div>
+        </div>
+        <div id="selection"></div>
+        <p id="no-selection">
+          <small>No runs selected. Click points in the charts.</small>
+        </p>
+      </section>
+
+      <a id="recipe-output" role="button" class="secondary outline" hidden>
+        View recipe output
+      </a>
+    </main>
+  </body>
+</html>

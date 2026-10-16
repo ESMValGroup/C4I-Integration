@@ -1,0 +1,8 @@
+{
+  "CMIP5": "recipe_impact_20230302_220334",
+  "CMIP6": "recipe_impact_cmip6_20261009_154152",
+  "CORDEX-CMIP6": {
+    "directory": "recipe_impact_cordex-cmip6_20261016_101508",
+    "domains": ["EUR", "CAM"]
+  }
+}

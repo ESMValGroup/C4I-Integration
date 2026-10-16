@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  
+    <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe impact</title>
+  <style>
+    html {
+      font-size: medium;
+    }
+    body {
+      color: #444;
+      font-family: georgia, times, serif;
+      font-size: 1rem;
+      line-height: 1.4;
+      margin: 2rem auto 8rem;
+      max-width: 1920px;
+      padding: 0 2em;
+      width: auto;
+    }
+    a {
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    h1,h2,h3,h4,h5,h6 {
+      color: #444;
+      font-weight: bold;
+      line-height: 1.2;
+      margin-bottom: 1em;
+      margin-top: 2em;
+    }
+    h1 {
+      font-size: 2.2em;
+    }
+    h2 {
+      font-size: 1.8em;
+      border-bottom: solid 0.1rem #444;
+    }
+    h3 {
+      font-size: 1.5em;
+    }
+    h4 {
+      font-size: 1.3em;
+    }
+    h5 {
+      font-size: 1.2em;
+      font-style: italic;
+    }
+    h6 {
+      font-size: 1.1em;
+      margin-bottom: 0.5rem;
+    }
+    pre,
+    code,
+    xmp {
+      font-family: courier;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+    img {
+      width: 500px;
+    }
+    figure {
+      display: inline-block;
+      width: 500px;
+      margin-top: 1em;
+      margin-bottom: 1em;
+      margin-left: 1em;
+      margin-right: 1em;
+    }
+  </style>
+</head>
+  
+
+  <body>
+
+    <h1>Quick insight for climate impact researchers</h1>
+
+<p>
+  This recipe provides quick insight into the spread and performance of
+multiple models. Many impact researchers do not have the time and
+finances to use a large ensemble of climate model runs for their
+impact analysis. To get an idea of the range of impacts of climate
+change it also suffices to use a small number of climate model runs.
+In case a system is only sensitive to annual temperature, one can
+select a run with a high change and one with a low change of annual
+temperature, preferably both with a low bias. Results of this recipe
+can be viewed interactively at
+https://esmvaltool.dkrz.de/shared/esmvaltool/climate4impact/. Notes: -
+Bias is calcated with respect to the ERA5 reanalysis dataset over the
+period 1981-2015. - Future change is calculated for 2036-2065 as
+compared to 1986-2015. - Area is set to Europe (lon 0-39; lat
+30-76.25) - All data are taken from the RCP/SSP 8.5 scenario
+</p>
+
+<h3>Authors</h3>
+
+<ul>
+  
+    <li>Peter Kalverla (NLeSC, Netherlands; <a href='https://orcid.org/0000-0002-5025-7862'>https://orcid.org/0000-0002-5025-7862</a>)</li>
+  
+    <li>Bouwe Andela (NLeSC, Netherlands; <a href='https://orcid.org/0000-0001-9005-8940'>https://orcid.org/0000-0001-9005-8940</a>)</li>
+  
+</ul>
+
+<h3>Maintainers</h3>
+
+<ul>
+  
+    <li>Peter Kalverla (NLeSC, Netherlands; <a href='https://orcid.org/0000-0002-5025-7862'>https://orcid.org/0000-0002-5025-7862</a>)</li>
+  
+</ul>
+
+<h3>Projects</h3>
+
+<ul>
+  
+</ul>
+
+<h3>References</h3>
+
+<ul>
+  
+</ul>
+
+    
+
+  <h2>Bias_And_Change</h2>
+  <p>Provide quick insights into the behaviour of each model by plotting the bias with respect to observations and change with respect to the reference period.
+</p>
+
+  
+
+    <h3>Bias And Change: Visualize</h3>
+
+
+
+    <figure>
+        <a href='plots/bias_and_change/visualize/bias_vs_change.png'>
+        <img src='plots/bias_and_change/visualize/bias_vs_change.png' alt='Bias and change for each variable'/>
+        </a>
+        <figcaption>
+            Bias and change for each variable
+            <br>
+            <br>
+            <a href='plots/bias_and_change/visualize/bias_vs_change.png'>download</a> |
+            <a href='plots/bias_and_change/visualize/bias_vs_change_citation.bibtex'>references</a> |
+            <a href='plots/bias_and_change/visualize/bias_vs_change_data_citation_info.txt'>extra data citation</a> |
+            <a href='plots/bias_and_change/visualize/bias_vs_change_provenance.xml'>provenance</a>
+        </figcaption>
+    </figure>
+
+
+
+    <figure>
+        <a href='plots/bias_and_change/visualize/table.png'>
+        <img src='plots/bias_and_change/visualize/table.png' alt='Bias and change for each variable'/>
+        </a>
+        <figcaption>
+            Bias and change for each variable
+            <br>
+            <br>
+            <a href='plots/bias_and_change/visualize/table.png'>download</a> |
+            <a href='plots/bias_and_change/visualize/table_citation.bibtex'>references</a> |
+            <a href='plots/bias_and_change/visualize/table_data_citation_info.txt'>extra data citation</a> |
+            <a href='plots/bias_and_change/visualize/table_provenance.xml'>provenance</a>
+        </figcaption>
+    </figure>
+
+
+
+<h4>Data files</h4>
+
+<ul>
+
+</ul>
+
+  
+
+
+
+  </body>
+
+  <h2>Files</h2>
+
+  <p>
+    <a href='run/main_log.txt'>main_log.txt</a> |
+    <a href='run/main_log_debug.txt'>main_log_debug.txt</a> |
+    <a href='run/recipe_impact.yml'>recipe_impact.yml</a> |
+    <a href='plots'>figures</a> |
+    <a href='work'>data</a>
+  </p>
+
+</html>
